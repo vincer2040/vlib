@@ -144,3 +144,19 @@ int vec_binary_search(vec* vec, void* needle, CmpFn* fn) {
     } while (lo < hi);
     return -1;
 }
+
+void vec_bubble_sort(vec* vec, CmpFn* fn) {
+    size_t i, len = vec->len, data_size = vec->data_size;
+
+    for (i = 0; i < len; ++i) {
+        size_t j;
+        for (j = 0; j < len - 1 - i; ++j) {
+            void* a = vec->data + (j * data_size);
+            void* b = vec->data + ((j + 1) * data_size);
+            int cmp = fn(a, b);
+            if (cmp > 0) {
+                swap(a, b, data_size);
+            }
+        }
+    }
+}
