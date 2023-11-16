@@ -160,3 +160,39 @@ void vec_bubble_sort(vec* vec, CmpFn* fn) {
         }
     }
 }
+
+static ssize_t partition(vec* vec, size_t lo, size_t hi, CmpFn* fn) {
+    size_t data_size = vec->data_size;
+    void* pivot = vec->data + (hi * data_size);
+    void* idx_val;
+    ssize_t idx = lo - 1;
+    size_t i;
+    for (i = lo; i < hi; ++i) {
+        void* at = vec->data + (i * data_size);
+        int cmp = fn(at, pivot);
+        if (cmp <= 0) {
+            void* a;
+            idx++;
+            a = vec->data + (idx * data_size);
+            swap(a, at, data_size);
+        }
+    }
+
+    idx++;
+    idx_val = vec->data + (idx * data_size);
+    swap(idx_val, pivot, data_size);
+    return idx;
+}
+
+static void qs(vec* vec, ssize_t lo, ssize_t hi, CmpFn* fn) {
+    ssize_t pivot_idx;
+    if (lo >= hi) {
+        return;
+    }
+
+    pivot_idx = partition(vec, lo, hi, fn);
+    qs(vec, lo, pivot_idx - 1, fn);
+    qs(vec, pivot_idx + 1, hi, fn);
+}
+
+void vec_quick_sort(vec* vec, CmpFn* fn) { qs(vec, 0, vec->len - 1, fn); }

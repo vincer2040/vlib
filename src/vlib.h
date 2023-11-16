@@ -39,5 +39,6 @@ void vec_free(vec* vec, FreeFn* fn);
 int vec_binary_search(vec* vec, void* needle, CmpFn* fn);
 
 void vec_bubble_sort(vec* vec, CmpFn* fn);
+void vec_quick_sort(vec* vec, CmpFn* fn);
 
 #endif /*__VLIB_H__*/
