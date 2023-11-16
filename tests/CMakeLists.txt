@@ -6,3 +6,12 @@ target_include_directories(vec_test PUBLIC "${PROJECT_BINARY_DIR}")
 
 add_test(NAME vec_test COMMAND vec_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
 set_tests_properties(vec_test PROPERTIES TIMEOUT 30)
+
+add_executable(binary_search_test binary_search_test.c)
+
+target_link_libraries(binary_search_test PUBLIC vlib check pthread)
+
+target_include_directories(binary_search_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME binary_search_test COMMAND binary_search_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(binary_search_test PROPERTIES TIMEOUT 30)

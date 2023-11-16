@@ -23,4 +23,6 @@ int vec_remove_at(vec* vec, size_t idx, void* out);
 ssize_t vec_find(vec* vec, void* cmp_data, void* out, CmpFn* fn);
 void vec_free(vec* vec, FreeFn* fn);
 
+int vec_binary_search(vec* vec, void* needle, CmpFn* fn);
+
 #endif /*__VLIB_H__*/

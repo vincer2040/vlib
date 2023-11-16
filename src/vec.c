@@ -127,3 +127,20 @@ void vec_free(vec* vec, FreeFn* fn) {
     }
     free(vec);
 }
+
+int vec_binary_search(vec* vec, void* needle, CmpFn* fn) {
+    size_t lo = 0, hi = vec->len, data_size = vec->data_size;
+    do {
+        size_t m = lo + (hi - lo) / 2;
+        void* v = vec->data + (m * data_size);
+        int cmp = fn(v, needle);
+        if (cmp == 0) {
+            return 0;
+        } else if (cmp > 0) {
+            hi = m;
+        } else {
+            lo = m + 1;
+        }
+    } while (lo < hi);
+    return -1;
+}
