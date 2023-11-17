@@ -3,14 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct node {
-    struct node* prev;
-    struct node* next;
-    unsigned char data[];
-} node;
-
-static node* node_new(void* data, size_t data_size);
-static void node_free(node* node, FreeFn* fn);
 static node* list_get_at(list* list, size_t idx);
 static void list_remove_node(list* list, node* node, void* out,
                              size_t data_size);
@@ -168,7 +160,7 @@ static void list_remove_node(list* list, node* node, void* out,
     node_free(node, NULL);
 }
 
-static node* node_new(void* data, size_t data_size) {
+node* node_new(void* data, size_t data_size) {
     node* node;
     size_t needed = (sizeof *node) + data_size;
     node = malloc(needed);
@@ -178,7 +170,7 @@ static node* node_new(void* data, size_t data_size) {
     return node;
 }
 
-static void node_free(node* node, FreeFn* fn) {
+void node_free(node* node, FreeFn* fn) {
     if (fn) {
         fn(node->data);
     }
