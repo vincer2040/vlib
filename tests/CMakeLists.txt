@@ -37,3 +37,13 @@ target_include_directories(quick_sort_test PUBLIC "${PROJECT_BINARY_DIR}")
 
 add_test(NAME quick_sort_test COMMAND quick_sort_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
 set_tests_properties(quick_sort_test PROPERTIES TIMEOUT 30)
+
+# list
+add_executable(list_test list_test.c)
+
+target_link_libraries(list_test PUBLIC vlib check pthread)
+
+target_include_directories(list_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME list_test COMMAND list_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(list_test PROPERTIES TIMEOUT 30)

@@ -19,6 +19,7 @@ add_library(
     src/bubble_sort.c
     src/quick_sort.c
     src/vec.c
+    src/list.c
 )
 
 install(FILES build/libvlib.a DESTINATION "${INSTALL_PREFIX}/lib")

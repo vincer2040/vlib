@@ -19,6 +19,7 @@
 
 typedef int CmpFn(void* a, void* b);
 typedef void FreeFn(void* ptr);
+typedef void PrintFn(void* ptr);
 
 typedef struct {
     size_t len;
@@ -43,5 +44,24 @@ int binary_search(void* arr, void* needle, size_t len, size_t data_size,
                   CmpFn* fn);
 void bubble_sort(void* vec, size_t len, size_t data_size, CmpFn* fn);
 void quick_sort(void* arr, size_t len, size_t data_size, CmpFn* fn);
+
+struct node;
+
+typedef struct {
+    struct node* head;
+    struct node* tail;
+    size_t data_size;
+    size_t len;
+} list;
+
+list list_new(size_t data_size);
+size_t list_len(list* list);
+int list_insert_at(list* list, void* data, size_t idx);
+int list_remove(list* list, void* data, void* out, CmpFn* cmp_fn);
+int list_remove_at(list* list, size_t idx, void* out);
+int list_append(list* list, void* data);
+int list_prepend(list* list, void* data);
+void* list_get(list* list, size_t idx);
+void list_free(list* list, FreeFn* fn);
 
 #endif /*__VLIB_H__*/
