@@ -47,3 +47,13 @@ target_include_directories(list_test PUBLIC "${PROJECT_BINARY_DIR}")
 
 add_test(NAME list_test COMMAND list_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
 set_tests_properties(list_test PROPERTIES TIMEOUT 30)
+
+# pq
+add_executable(pq_test list_test.c)
+
+target_link_libraries(pq_test PUBLIC vlib check pthread)
+
+target_include_directories(pq_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME pq_test COMMAND pq_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(pq_test PROPERTIES TIMEOUT 30)

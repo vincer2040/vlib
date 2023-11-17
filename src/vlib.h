@@ -17,6 +17,10 @@
         }                                                                      \
     } while (0)
 
+#define avl_empty NULL
+
+#define max(a, b) ((a) > (b) ? (a) : (b))
+
 typedef int CmpFn(void* a, void* b);
 typedef void FreeFn(void* ptr);
 typedef void PrintFn(void* ptr);
@@ -63,5 +67,17 @@ int list_append(list* list, void* data);
 int list_prepend(list* list, void* data);
 void* list_get(list* list, size_t idx);
 void list_free(list* list, FreeFn* fn);
+
+typedef struct {
+    size_t len;
+    size_t cap;
+    size_t data_size;
+    unsigned char data[];
+} pq;
+
+pq* pq_new(size_t data_size);
+int pq_insert(pq** pq, void* value, CmpFn* fn);
+int pq_delete(pq* pq, void* out, CmpFn* fn);
+void pq_free(pq* pq, FreeFn* fn);
 
 #endif /*__VLIB_H__*/

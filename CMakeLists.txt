@@ -20,6 +20,7 @@ add_library(
     src/quick_sort.c
     src/vec.c
     src/list.c
+    src/pq.c
 )
 
 install(FILES build/libvlib.a DESTINATION "${INSTALL_PREFIX}/lib")
