@@ -25,6 +25,7 @@ add_library(
     src/sha256.c
     src/util.c
     src/ht.c
+    src/vstr.c
 )
 
 install(FILES build/libvlib.a DESTINATION "${INSTALL_PREFIX}/lib")

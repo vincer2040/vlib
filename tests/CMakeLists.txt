@@ -1,3 +1,13 @@
+# vstr
+add_executable(vstr_test vstr_test.c)
+
+target_link_libraries(vstr_test PUBLIC vlib check pthread)
+
+target_include_directories(vstr_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME vstr_test COMMAND vstr_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(vstr_test PROPERTIES TIMEOUT 30)
+
 # vec
 add_executable(vec_test vec_test.c)
 

@@ -17,15 +17,39 @@
         }                                                                      \
     } while (0)
 
-#define avl_empty NULL
-
-#define max(a, b) ((a) > (b) ? (a) : (b))
-
 typedef int CmpFn(void* a, void* b);
 typedef void FreeFn(void* ptr);
 typedef void PrintFn(void* ptr);
 
 void get_random_bytes(uint8_t* p, size_t len);
+
+#define VSTR_MAX_SMALL_SIZE 23
+
+typedef struct {
+    char data[VSTR_MAX_SMALL_SIZE];
+} vstr_sm;
+
+typedef struct __attribute__((__packed__)) {
+    char* data;
+    size_t cap;
+    size_t len : 56;
+} vstr_lg;
+
+typedef struct {
+    union {
+        vstr_sm sm;
+        vstr_lg lg;
+    } str_data;
+    uint8_t is_large : 1;
+    uint8_t small_avail : 7;
+} vstr;
+
+vstr vstr_new(void);
+vstr vstr_from(const char* cstr);
+size_t vstr_len(vstr* s);
+char* vstr_data(vstr* s);
+int vstr_push_char(vstr* s, char c);
+void vstr_free(vstr* s);
 
 typedef struct {
     size_t len;
@@ -51,7 +75,14 @@ int binary_search(void* arr, void* needle, size_t len, size_t data_size,
 void bubble_sort(void* vec, size_t len, size_t data_size, CmpFn* fn);
 void quick_sort(void* arr, size_t len, size_t data_size, CmpFn* fn);
 
-struct node;
+typedef struct node {
+    struct node* prev;
+    struct node* next;
+    unsigned char data[];
+} node;
+
+node* node_new(void* data, size_t data_size);
+void node_free(node* node, FreeFn* fn);
 
 typedef struct {
     struct node* head;
