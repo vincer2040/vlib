@@ -3,6 +3,8 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 
 #define swap(a, b, size)                                                       \
@@ -15,6 +17,13 @@
             uca[x] = ucb[x];                                                   \
             ucb[x] = tmp;                                                      \
         }                                                                      \
+    } while (0)
+
+#define dbgf(...)                                                              \
+    do {                                                                       \
+        printf("%s:%d ");                                                      \
+        printf(__VA_ARGS__);                                                   \
+        fflush(stdout);                                                        \
     } while (0)
 
 typedef int CmpFn(void* a, void* b);
