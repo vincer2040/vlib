@@ -70,6 +70,8 @@ static void heapify_down(pq* pq, size_t idx, CmpFn* fn) {
         } else if ((cmp_lv_rv > 0) && (cmp_v_lv < 0)) {
             swap(val, left_val, data_size);
             idx = left_idx;
+        } else {
+            break;
         }
     }
 }
@@ -105,7 +107,7 @@ int pq_insert(pq** pq, void* value, CmpFn* fn) {
 
 int pq_delete(pq* pq, void* out, CmpFn* fn) {
     size_t len = pq->len, data_size = pq->data_size;
-    size_t len_x_size = len * data_size;
+    size_t len_x_size;
     if (len == 0) {
         return -1;
     }
@@ -116,6 +118,7 @@ int pq_delete(pq* pq, void* out, CmpFn* fn) {
         return 0;
     }
     pq->len--;
+    len_x_size = pq->len * data_size;
     swap(pq->data, pq->data + len_x_size, data_size);
     memset(pq->data + len_x_size, 0, data_size);
     heapify_down(pq, 0, fn);

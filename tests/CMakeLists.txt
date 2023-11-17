@@ -49,7 +49,7 @@ add_test(NAME list_test COMMAND list_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/
 set_tests_properties(list_test PROPERTIES TIMEOUT 30)
 
 # pq
-add_executable(pq_test list_test.c)
+add_executable(pq_test pq_test.c)
 
 target_link_libraries(pq_test PUBLIC vlib check pthread)
 
