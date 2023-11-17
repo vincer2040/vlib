@@ -21,6 +21,10 @@ add_library(
     src/vec.c
     src/list.c
     src/pq.c
+    src/siphash.c
+    src/sha256.c
+    src/util.c
+    src/ht.c
 )
 
 install(FILES build/libvlib.a DESTINATION "${INSTALL_PREFIX}/lib")

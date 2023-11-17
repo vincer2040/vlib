@@ -25,6 +25,8 @@ typedef int CmpFn(void* a, void* b);
 typedef void FreeFn(void* ptr);
 typedef void PrintFn(void* ptr);
 
+void get_random_bytes(uint8_t* p, size_t len);
+
 typedef struct {
     size_t len;
     size_t cap;
@@ -79,5 +81,25 @@ pq* pq_new(size_t data_size);
 int pq_insert(pq** pq, void* value, CmpFn* fn);
 int pq_delete(pq* pq, void* out, CmpFn* fn);
 void pq_free(pq* pq, FreeFn* fn);
+
+struct ht_entry;
+
+#define HT_SEED_SIZE 16
+
+typedef struct {
+    size_t len;
+    size_t cap;
+    size_t data_size;
+    unsigned char seed[HT_SEED_SIZE];
+    struct ht_entry** buckets;
+} ht;
+
+ht ht_new(size_t data_size);
+size_t ht_len(ht* ht);
+int ht_insert(ht* ht, void* key, size_t key_len, void* value, FreeFn* fn);
+void* ht_get(ht* ht, void* key, size_t key_len);
+int ht_delete(ht* ht, void* key, size_t key_len, FreeFn* free_key,
+              FreeFn* free_val);
+void ht_free(ht* ht, FreeFn* free_key, FreeFn* free_val);
 
 #endif /*__VLIB_H__*/
