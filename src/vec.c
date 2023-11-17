@@ -129,70 +129,16 @@ void vec_free(vec* vec, FreeFn* fn) {
 }
 
 int vec_binary_search(vec* vec, void* needle, CmpFn* fn) {
-    size_t lo = 0, hi = vec->len, data_size = vec->data_size;
-    do {
-        size_t m = lo + (hi - lo) / 2;
-        void* v = vec->data + (m * data_size);
-        int cmp = fn(v, needle);
-        if (cmp == 0) {
-            return 0;
-        } else if (cmp > 0) {
-            hi = m;
-        } else {
-            lo = m + 1;
-        }
-    } while (lo < hi);
-    return -1;
+    size_t len = vec->len, data_size = vec->data_size;
+    return binary_search(vec->data, needle, len, data_size, fn);
 }
 
 void vec_bubble_sort(vec* vec, CmpFn* fn) {
-    size_t i, len = vec->len, data_size = vec->data_size;
-
-    for (i = 0; i < len; ++i) {
-        size_t j;
-        for (j = 0; j < len - 1 - i; ++j) {
-            void* a = vec->data + (j * data_size);
-            void* b = vec->data + ((j + 1) * data_size);
-            int cmp = fn(a, b);
-            if (cmp > 0) {
-                swap(a, b, data_size);
-            }
-        }
-    }
+    size_t len = vec->len, data_size = vec->data_size;
+    bubble_sort(vec->data, len, data_size, fn);
 }
 
-static ssize_t partition(vec* vec, size_t lo, size_t hi, CmpFn* fn) {
-    size_t data_size = vec->data_size;
-    void* pivot = vec->data + (hi * data_size);
-    void* idx_val;
-    ssize_t idx = lo - 1;
-    size_t i;
-    for (i = lo; i < hi; ++i) {
-        void* at = vec->data + (i * data_size);
-        int cmp = fn(at, pivot);
-        if (cmp <= 0) {
-            void* a;
-            idx++;
-            a = vec->data + (idx * data_size);
-            swap(a, at, data_size);
-        }
-    }
-
-    idx++;
-    idx_val = vec->data + (idx * data_size);
-    swap(idx_val, pivot, data_size);
-    return idx;
+void vec_quick_sort(vec* vec, CmpFn* fn) {
+    size_t len = vec->len, data_size = vec->data_size;
+    quick_sort(vec->data, len, data_size, fn);
 }
-
-static void qs(vec* vec, ssize_t lo, ssize_t hi, CmpFn* fn) {
-    ssize_t pivot_idx;
-    if (lo >= hi) {
-        return;
-    }
-
-    pivot_idx = partition(vec, lo, hi, fn);
-    qs(vec, lo, pivot_idx - 1, fn);
-    qs(vec, pivot_idx + 1, hi, fn);
-}
-
-void vec_quick_sort(vec* vec, CmpFn* fn) { qs(vec, 0, vec->len - 1, fn); }

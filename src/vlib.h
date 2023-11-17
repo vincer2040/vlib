@@ -35,10 +35,13 @@ void* vec_get_at(vec* vec, size_t idx);
 int vec_remove_at(vec* vec, size_t idx, void* out);
 ssize_t vec_find(vec* vec, void* cmp_data, void* out, CmpFn* fn);
 void vec_free(vec* vec, FreeFn* fn);
-
 int vec_binary_search(vec* vec, void* needle, CmpFn* fn);
-
 void vec_bubble_sort(vec* vec, CmpFn* fn);
 void vec_quick_sort(vec* vec, CmpFn* fn);
+
+int binary_search(void* arr, void* needle, size_t len, size_t data_size,
+                  CmpFn* fn);
+void bubble_sort(void* vec, size_t len, size_t data_size, CmpFn* fn);
+void quick_sort(void* arr, size_t len, size_t data_size, CmpFn* fn);
 
 #endif /*__VLIB_H__*/
