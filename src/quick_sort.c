@@ -26,12 +26,16 @@ static ssize_t partition(void* arr, ssize_t lo, ssize_t hi, size_t data_size,
 
 static void qs(void* arr, ssize_t lo, ssize_t hi, size_t data_size, CmpFn* fn) {
     ssize_t pivot_idx;
-    if (lo >= hi) {
-        return;
+    while (lo < hi) {
+        pivot_idx = partition(arr, lo, hi, data_size, fn);
+        if ((pivot_idx - lo) < (hi - pivot_idx)) {
+            qs(arr, lo, pivot_idx - 1, data_size, fn);
+            lo = pivot_idx + 1;
+        } else {
+            qs(arr, pivot_idx + 1, hi, data_size, fn);
+            hi = pivot_idx - 1;
+        }
     }
-    pivot_idx = partition(arr, lo, hi, data_size, fn);
-    qs(arr, lo, pivot_idx - 1, data_size, fn);
-    qs(arr, pivot_idx + 1, hi, data_size, fn);
 }
 
 void quick_sort(void* arr, size_t len, size_t data_size, CmpFn* fn) {
