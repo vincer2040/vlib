@@ -62,6 +62,29 @@ START_TEST(test_vstr_from_lg) {
 }
 END_TEST
 
+START_TEST(test_vstr_cmp) {
+    vstr a, b, c, d, e, f;
+    int cmp;
+    a = vstr_from("aaaaaaaaaa");
+    b = vstr_from("aaaaaaaaaaa");
+    cmp = vstr_cmp(&a, &b);
+    ck_assert_int_gt(cmp, 0);
+
+    cmp = vstr_cmp(&b, &a);
+    ck_assert_int_lt(cmp, 0);
+
+    c = vstr_from("aaaaaaaaaa");
+    d = vstr_from("aaaaaaaaaa");
+    cmp = vstr_cmp(&c, &d);
+    ck_assert_int_eq(cmp, 0);
+
+    e = vstr_from("aaaaaaaaaa");
+    f = vstr_from("bbbbbbbbbb");
+    cmp = vstr_cmp(&e, &f);
+    ck_assert_int_lt(cmp, 0);
+}
+END_TEST
+
 Suite* ht_suite() {
     Suite* s;
     TCase* tc_core;
@@ -69,6 +92,7 @@ Suite* ht_suite() {
     tc_core = tcase_create("Core");
     tcase_add_test(tc_core, test_vstr_push_char);
     tcase_add_test(tc_core, test_vstr_from_sm);
+    tcase_add_test(tc_core, test_vstr_cmp);
     suite_add_tcase(s, tc_core);
     return s;
 }

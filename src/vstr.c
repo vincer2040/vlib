@@ -43,6 +43,29 @@ char* vstr_data(vstr* s) {
     return s->str_data.sm.data;
 }
 
+int vstr_cmp(vstr* a, vstr* b) {
+    size_t alen = vstr_len(a);
+    size_t blen = vstr_len(b);
+    char* astr = vstr_data(a);
+    char* bstr = vstr_data(b);
+    if (alen == blen) {
+        return strncmp(astr, bstr, alen);
+    }
+    if (alen < blen) {
+        int cmp = strncmp(astr, bstr, alen);
+        if (cmp == 0) {
+            return 1;
+        }
+        return cmp;
+    } else {
+        int cmp = strncmp(astr, bstr, blen);
+        if (cmp == 0) {
+            return -1;
+        }
+        return cmp;
+    }
+}
+
 int vstr_push_char(vstr* s, char c) {
     int push_res;
     if (s->is_large) {

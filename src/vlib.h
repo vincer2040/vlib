@@ -48,6 +48,7 @@ vstr vstr_new(void);
 vstr vstr_from(const char* cstr);
 size_t vstr_len(vstr* s);
 char* vstr_data(vstr* s);
+int vstr_cmp(vstr* a, vstr* b);
 int vstr_push_char(vstr* s, char c);
 void vstr_free(vstr* s);
 
