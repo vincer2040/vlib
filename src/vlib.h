@@ -33,6 +33,7 @@ typedef void PrintFn(void* ptr);
 void get_random_bytes(uint8_t* p, size_t len);
 
 #define VSTR_MAX_SMALL_SIZE 23
+#define VSTR_MAX_LARGE_SIZE (((uint64_t)(1)) << 56)
 
 typedef struct {
     char data[VSTR_MAX_SMALL_SIZE];
