@@ -32,7 +32,7 @@ START_TEST(test_ht) {
     ck_assert_ptr_nonnull(get);
     ck_assert_int_eq(*get, 11);
 
-    get = ht_get(&ht, "a4", 2);
+    get = ht_get(&ht, "a5", 2);
     ck_assert_ptr_null(get);
 
     ck_assert_int_eq(ht_delete(&ht, "a0", 2, NULL, NULL), 0);
@@ -54,7 +54,7 @@ START_TEST(test_ht) {
     ck_assert_ptr_nonnull(get);
     ck_assert_int_eq(*get, 11);
 
-    get = ht_get(&ht, "a4", 2);
+    get = ht_get(&ht, "a5", 2);
     ck_assert_ptr_null(get);
 
     ht_free(&ht, NULL, NULL);
