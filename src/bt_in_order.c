@@ -3,7 +3,7 @@
 static void in_order_walk(binary_node* node, vec** vec);
 
 vec* bt_in_order(binary_tree* tree) {
-    vec* v = vec_new(tree->data_size);
+    vec* v = vec_new_with_capacity(tree->data_size, tree->num_el);
     if (v == NULL) {
         return NULL;
     }
