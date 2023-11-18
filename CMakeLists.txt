@@ -19,6 +19,7 @@ add_library(
     src/bubble_sort.c
     src/quick_sort.c
     src/vec.c
+    src/queue.c
     src/list.c
     src/pq.c
     src/siphash.c

@@ -316,6 +316,67 @@ void vec_bubble_sort(vec* vec, CmpFn* fn);
 void vec_quick_sort(vec* vec, CmpFn* fn);
 
 /**
+ * node of the queue
+ */
+struct qnode;
+
+/**
+ * @brief queue data stucture
+ *
+ * Available operations:
+ *      - enque (queue_enque)
+ *      - peek (queue_peek);
+ *      - get length (queue_len)
+ *      - deque (queue_deque)
+ */
+typedef struct {
+    size_t len;         /* the length of the queue */
+    size_t data_size;   /* the size of the data in the nodes */
+    struct qnode* head; /* the first element of the queue */
+    struct qnode* tail; /* the last element of the queue */
+} queue;
+
+/**
+ * @brief create a new queue
+ * @param data_size the size of the data stored in the queue
+ * @returns newly created queue
+ */
+queue queue_new(size_t data_size);
+/**
+ * @brief get the number of nodes in the queue
+ * @param q the q to get the length of
+ * @returns number of nodes in the queue
+ */
+size_t queue_len(queue* q);
+/**
+ * @brief peek at the head node's data
+ * @param q the queue to peek
+ * @returns the head's data, NULL if length of queue is 0
+ */
+void* queue_peek(queue* q);
+/**
+ * @brief enque data into the queue
+ * @param q the queue to enque data into
+ * @param data the data to enque
+ * @returns 0 on succes, -1 on failure
+ */
+int queue_enque(queue* q, void* data);
+/**
+ * @brief deque from the queue
+ * @param q the queue to deque from
+ * @param out where to copy the deque'd data into
+ * @returns 0 on success, -1 on failure
+ */
+int queue_deque(queue* q, void* out);
+/**
+ * @brief free the queue
+ * @param q the queue to free
+ * @param fn optional callback function to free the data in the qnodes. If null,
+ * it is ignored
+ */
+void queue_free(queue* q, FreeFn* fn);
+
+/**
  * @brief node structure used in doubly linked list
  *
  * data is stored in the same memory allocation as the node for better cache
