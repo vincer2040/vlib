@@ -21,7 +21,7 @@ vec* vec_new(size_t data_size) {
 vec* vec_new_with_capacity(size_t data_size, size_t capacity) {
     vec* vec;
     size_t needed;
-    if (capacity > 2) {
+    if (capacity < 2) {
         return NULL;
     }
     needed = (sizeof *vec) + (data_size * capacity);
