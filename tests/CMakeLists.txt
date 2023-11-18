@@ -58,6 +58,16 @@ target_include_directories(list_test PUBLIC "${PROJECT_BINARY_DIR}")
 add_test(NAME list_test COMMAND list_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
 set_tests_properties(list_test PROPERTIES TIMEOUT 30)
 
+# tree traversal
+add_executable(tree_traversal_test tree_traversal_test.c)
+
+target_link_libraries(tree_traversal_test PUBLIC vlib check pthread)
+
+target_include_directories(tree_traversal_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME tree_traversal_test COMMAND tree_traversal_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(tree_traversal_test PROPERTIES TIMEOUT 30)
+
 # pq
 add_executable(pq_test pq_test.c)
 

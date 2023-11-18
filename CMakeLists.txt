@@ -26,6 +26,11 @@ add_library(
     src/util.c
     src/ht.c
     src/vstr.c
+    src/binary_tree.c
+    src/binary_node.c
+    src/bt_pre_order.c
+    src/bt_in_order.c
+    src/bt_post_order.c
 )
 
 install(FILES build/libvlib.a DESTINATION "${INSTALL_PREFIX}/lib")

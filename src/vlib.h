@@ -428,6 +428,61 @@ void* list_get(list* list, size_t idx);
 void list_free(list* list, FreeFn* fn);
 
 /**
+ * @brief node of a binary tree
+ */
+typedef struct binary_node {
+    struct binary_node* left;  /* left child */
+    struct binary_node* right; /* right child */
+    unsigned char data[];      /* data stored in the node */
+} binary_node;
+
+/**
+ * @brief allocate a new node
+ * @param data the data to store in the node
+ * @param data_size the size of the data to store
+ * @returns newly create node on success, NULL on failure
+ */
+binary_node* binary_node_new(void* data, size_t data_size);
+
+/**
+ * @brief binary tree structure
+ *
+ * contains the root node, the size of the data in the nodes,
+ * and the number of elements in the tree
+ */
+typedef struct {
+    size_t num_el;     /* the number of nodes in the tree */
+    size_t data_size;  /* size of the data in the nodes */
+    binary_node* root; /* root of the tree */
+} binary_tree;
+
+/**
+ * @brief free a binary tree
+ * @param tree the tree to free
+ * @param fn optional callback function to free the data in the nodes. If null
+ * it is ignored
+ */
+void binary_tree_free(binary_tree* tree, FreeFn* fn);
+/**
+ * @brief walk the tree in pre order
+ * @param tree the tree to walk
+ * @returns vector of the data in pre order, NULL on failure
+ */
+vec* bt_pre_order(binary_tree* tree);
+/**
+ * @brief walk the tree in order
+ * @param tree the tree to walk
+ * @returns vector of the data in order, NULL on failure
+ */
+vec* bt_in_order(binary_tree* tree);
+/**
+ * @brief walk the tree in post order
+ * @param tree the tree to walk
+ * @returns vector of the data in post order, NULL on failure
+ */
+vec* bt_post_order(binary_tree* tree);
+
+/**
  * @brief priority queue implementation
  *
  * Available operations:
@@ -502,7 +557,7 @@ typedef struct {
     size_t cap;       /* the number of slots available in the table */
     size_t data_size; /* the size of the data in the table */
     unsigned char seed[HT_SEED_SIZE]; /* seed used to hash the keys*/
-    ht_bucket* buckets; /* slots of the table */
+    ht_bucket* buckets;               /* slots of the table */
 } ht;
 
 /**
