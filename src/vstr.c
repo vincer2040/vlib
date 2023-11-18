@@ -108,7 +108,9 @@ static vstr_lg vstr_make_lg(const char* data) {
 
 static vstr_lg vstr_make_lg_len(const char* data, size_t len) {
     vstr_lg lg = {0};
-    assert(len < VSTR_MAX_LARGE_SIZE);
+    if (len >= VSTR_MAX_LARGE_SIZE) {
+        return lg;
+    }
     lg.len = len;
     lg.cap = len + 1;
     lg.data = calloc(lg.cap, sizeof(char));
