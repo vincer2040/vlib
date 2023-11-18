@@ -1,5 +1,4 @@
 #include "vlib.h"
-#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -21,6 +20,9 @@ vstr vstr_from(const char* cstr) {
     size_t cstr_len = strlen(cstr);
     if (cstr_len > VSTR_MAX_SMALL_SIZE) {
         s.str_data.lg = vstr_make_lg_len(cstr, cstr_len);
+        if (s.str_data.lg.cap == 0) {
+            return s;
+        }
         s.is_large = 1;
         return s;
     }
@@ -77,6 +79,9 @@ int vstr_push_char(vstr* s, char c) {
         return 0;
     }
     s->str_data.lg = vstr_make_lg(s->str_data.sm.data);
+    if (s->str_data.lg.cap == 0) {
+        return -1;
+    }
     s->is_large = 1;
     return vstr_lg_push_char(&(s->str_data.lg), c);
 }
@@ -92,7 +97,11 @@ static vstr_lg vstr_make_lg(const char* data) {
     lg.len = VSTR_MAX_SMALL_SIZE;
     lg.cap = VSTR_MAX_SMALL_SIZE + 2;
     lg.data = calloc(lg.cap, sizeof(char));
-    assert(lg.data != NULL);
+    if (lg.data == NULL) {
+        lg.len = 0;
+        lg.cap = 0;
+        return lg;
+    }
     memcpy(lg.data, data, VSTR_MAX_SMALL_SIZE);
     return lg;
 }
@@ -103,7 +112,11 @@ static vstr_lg vstr_make_lg_len(const char* data, size_t len) {
     lg.len = len;
     lg.cap = len + 1;
     lg.data = calloc(lg.cap, sizeof(char));
-    assert(lg.data != NULL);
+    if (lg.data == NULL) {
+        lg.len = 0;
+        lg.cap = 0;
+        return lg;
+    }
     memcpy(lg.data, data, len);
     return lg;
 }
@@ -120,6 +133,9 @@ static int vstr_sm_push_char(vstr_sm* sm, char c, uint8_t avail) {
 
 static int vstr_lg_push_char(vstr_lg* lg, char c) {
     size_t len = lg->len, cap = lg->cap;
+    if (cap == 0) {
+        return -1;
+    }
     if (len == (cap - 1)) {
         int realloc_res = vstr_realloc_lg(lg, len, cap);
         if (realloc_res == -1) {
