@@ -6,15 +6,16 @@
 #include <string.h>
 
 START_TEST(test_ht) {
-    int a0 = 5, a1 = 7, a2 = 9, a3 = 11;
+    int a0 = 5, a1 = 7, a2 = 9, a3 = 11, a4 = 69;
     int* get;
     ht ht = ht_new(sizeof(int));
     ht_insert(&ht, "a0", 2, &a0, NULL);
     ht_insert(&ht, "a1", 2, &a1, NULL);
     ht_insert(&ht, "a2", 2, &a2, NULL);
     ht_insert(&ht, "a3", 2, &a3, NULL);
+    ht_insert(&ht, "a4", 2, &a4, NULL);
 
-    ck_assert_uint_eq(ht_len(&ht), 4);
+    ck_assert_uint_eq(ht_len(&ht), 5);
 
     get = ht_get(&ht, "a0", 2);
     ck_assert_ptr_nonnull(get);
@@ -38,7 +39,7 @@ START_TEST(test_ht) {
     ck_assert_int_eq(ht_delete(&ht, "a0", 2, NULL, NULL), 0);
     ck_assert_int_eq(ht_delete(&ht, "a1", 2, NULL, NULL), 0);
 
-    ck_assert_uint_eq(ht_len(&ht), 2);
+    ck_assert_uint_eq(ht_len(&ht), 3);
 
     get = ht_get(&ht, "a0", 2);
     ck_assert_ptr_null(get);

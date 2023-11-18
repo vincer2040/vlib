@@ -8,7 +8,7 @@
 #define ht_padding(size)                                                       \
     ((sizeof(void*) - ((size + 8) % sizeof(void*))) & (sizeof(void*) - 1))
 
-#define HT_INITIAL_CAP 2
+#define HT_INITIAL_CAP 32
 #define HT_BUCKET_INITIAL_CAP 2
 
 typedef struct ht_entry {
@@ -17,6 +17,7 @@ typedef struct ht_entry {
 } ht_entry;
 
 static uint64_t ht_hash(ht* ht, void* key, size_t key_len);
+static int ht_resize(ht* ht);
 static int ht_init_bucket(ht_bucket* bucket);
 static int ht_realloc_bucket(ht_bucket* bucket);
 static void ht_bucket_remove(ht_bucket* bucket, size_t idx, FreeFn* free_key,
@@ -45,6 +46,11 @@ int ht_insert(ht* ht, void* key, size_t key_len, void* value, FreeFn* fn) {
     ht_bucket* bucket;
     ht_entry* entry;
     size_t i, len, cap, data_size = ht->data_size;
+    if (ht->len >= ht->cap) {
+        if (ht_resize(ht) == -1) {
+            return -1;
+        }
+    }
     hash = ht_hash(ht, key, key_len);
     bucket = &(ht->buckets[hash]);
     len = bucket->len;
@@ -160,6 +166,69 @@ void ht_free(ht* ht, FreeFn* free_key, FreeFn* free_val) {
 
 static uint64_t ht_hash(ht* ht, void* key, size_t key_len) {
     return siphash(key, key_len, ht->seed) % ht->cap;
+}
+
+static int ht_resize(ht* ht) {
+    size_t i, old_cap = ht->cap;
+    size_t new_cap = old_cap << 1;
+    void* tmp = realloc(ht->buckets, new_cap * sizeof(ht_bucket));
+    if (tmp == NULL) {
+        return -1;
+    }
+    ht->buckets = tmp;
+    memset(&(ht->buckets[old_cap]), 0, (new_cap - old_cap) * sizeof(ht_bucket));
+    for (i = 0; i < old_cap; ++i) {
+        ht_bucket* bucket = &(ht->buckets[i]);
+        size_t j, len = bucket->len;
+        for (j = 0; j < len; ++j) {
+            ht_entry* entry = bucket->entries[j];
+            size_t key_len = entry->key_len;
+            uint64_t hash = ht_hash(ht, entry->data, key_len);
+            if (hash == i) {
+                size_t k;
+                for (k = 0; k < j; ++k) {
+                    ht_entry* cur = bucket->entries[k];
+                    if (!cur) {
+                        memmove(&(bucket->entries[k]), &(bucket->entries[j]),
+                                sizeof(ht_entry*));
+                        memset(&(bucket->entries[j]), 0, sizeof(ht_entry*));
+                        goto next;
+                    }
+                }
+                goto next;
+            } else {
+                ht_bucket* new_bucket = &(ht->buckets[hash]);
+                size_t new_bucket_len = new_bucket->len,
+                       new_bucket_cap = new_bucket->cap;
+                if (new_bucket_cap == 0) {
+                    if (ht_init_bucket(new_bucket) == -1) {
+                        return -1;
+                    }
+                    new_bucket_cap = new_bucket->cap;
+                }
+                if (new_bucket->len == 0) {
+                    new_bucket->entries[0] = entry;
+                    memset(&(bucket->entries[j]), 0, sizeof(ht_entry*));
+                    new_bucket->len++;
+                    bucket->len--;
+                    goto next;
+                }
+                if (new_bucket_len == new_bucket_cap) {
+                    if (ht_realloc_bucket(new_bucket) == -1) {
+                        return -1;
+                    }
+                }
+                memmove(&(new_bucket->entries[new_bucket_len]),
+                        &(bucket->entries[j]), sizeof(ht_entry*));
+                memset(&(bucket->entries[j]), 0, sizeof(ht_entry*));
+                new_bucket->len++;
+                bucket->len--;
+            }
+        next:
+            continue;
+        }
+    }
+    return 0;
 }
 
 static int ht_init_bucket(ht_bucket* bucket) {
