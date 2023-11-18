@@ -47,7 +47,7 @@
  */
 #define dbgf(...)                                                              \
     do {                                                                       \
-        printf("%s:%d ");                                                      \
+        printf("%s:%d ", __FILE__, __LINE__);                                  \
         printf(__VA_ARGS__);                                                   \
         fflush(stdout);                                                        \
     } while (0)
@@ -479,6 +479,12 @@ void pq_free(pq* pq, FreeFn* fn);
  */
 struct ht_entry;
 
+typedef struct {
+    size_t len;
+    size_t cap;
+    struct ht_entry** entries;
+} ht_bucket;
+
 #define HT_SEED_SIZE 16
 
 /**
@@ -496,7 +502,7 @@ typedef struct {
     size_t cap;       /* the number of slots available in the table */
     size_t data_size; /* the size of the data in the table */
     unsigned char seed[HT_SEED_SIZE]; /* seed used to hash the keys*/
-    struct ht_entry** buckets; /* slots of the table, singly linked lists */
+    ht_bucket* buckets; /* slots of the table */
 } ht;
 
 /**
