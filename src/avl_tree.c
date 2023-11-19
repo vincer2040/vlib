@@ -82,7 +82,10 @@ vec* avl_post_order(avl_tree* tree) {
     return vec;
 }
 
-void avl_tree_free(avl_tree* tree, FreeFn* fn) { free_walk(tree->root, fn); }
+void avl_tree_free(avl_tree* tree, FreeFn* fn) {
+    free_walk(tree->root, fn);
+    tree->num_el = 0;
+}
 
 static avl_node* insert(avl_node* root, void* key, size_t key_size, CmpFn* fn,
                         int* success) {
