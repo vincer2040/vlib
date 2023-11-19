@@ -11,6 +11,7 @@
  *              - Doubly linked list (list.c)
  *              - Priority Queue (Min-heap) (pq.c)
  *              - Hashtable (ht.c)
+ *              - avl tree (avl_tree.c)
  *
  *              Algorithms:
  *              - binary search (binary_search.c)
