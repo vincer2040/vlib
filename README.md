@@ -23,7 +23,9 @@ A pure C data structure and and algorithms library
 
 ### String
 
-A string implementation that is optimzed for small strings
+A string implementation that is optimzed for small strings. Max string length
+for a small string is 23 bytes. If it is longer than 23 bytes, it will be
+allocated on the heap.
 
 #### Available Operations
 
