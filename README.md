@@ -185,3 +185,63 @@ Free the queue
 void queue_free(queue* q, FreeFn* fn);
 ```
 
+### Doubly Linked List
+
+A doubly linked list based on the Java interface
+
+#### Available Operations
+
+Create a new list
+
+```
+list list_new(size_t data_size);
+```
+
+Get the number of items in the list
+
+```
+size_t list_len(list* list);
+```
+
+Insert data at a specific index
+
+```
+int list_insert_at(list* list, void* data, size_t idx);
+```
+
+Remove a specific item from a list
+
+```
+int list_remove(list* list, void* data, void* out, CmpFn* cmp_fn);
+```
+
+Remove an item from a specific index
+
+```
+int list_remove_at(list* list, size_t idx, void* out);
+```
+
+Append data to end of the list
+
+```
+int list_append(list* list, void* data);
+```
+
+Prepend data to front of the list
+
+```
+int list_prepend(list* list, void* data);
+```
+
+Get an item from the list at a specific index
+
+```
+void* list_get(list* list, size_t idx);
+```
+
+Free the whole list
+
+```
+void list_free(list* list, FreeFn* fn);
+```
+
