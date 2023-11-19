@@ -13,59 +13,12 @@ int cmp(void* a, void* b) {
 
 static binary_tree tree(void);
 
-START_TEST(test_pre_oder) {
+START_TEST(test_bfs) {
     binary_tree t = tree();
-    int exps[] = {
-        20, 10, 5, 7, 15, 50, 30, 29, 45, 100,
-    };
-    size_t i, len = sizeof exps / sizeof exps[0];
-    vec* v = bt_pre_order(&t);
-
-    for (i = 0; i < len; ++i) {
-        int* cur = vec_get_at(v, i);
-        int exp = exps[i];
-        ck_assert_ptr_nonnull(cur);
-        ck_assert_int_eq(*cur, exp);
-    }
-    vec_free(v, NULL);
-    binary_tree_free(&t, NULL);
-}
-END_TEST
-
-START_TEST(test_in_order) {
-    binary_tree t = tree();
-    int exps[] = {
-        5, 7, 10, 15, 20, 29, 30, 45, 50, 100,
-    };
-    size_t i, len = sizeof exps / sizeof exps[0];
-    vec* v = bt_in_order(&t);
-
-    for (i = 0; i < len; ++i) {
-        int* cur = vec_get_at(v, i);
-        int exp = exps[i];
-        ck_assert_ptr_nonnull(cur);
-        ck_assert_int_eq(*cur, exp);
-    }
-    vec_free(v, NULL);
-    binary_tree_free(&t, NULL);
-}
-END_TEST
-
-START_TEST(test_post_order) {
-    binary_tree t = tree();
-    int exps[] = {
-        7, 5, 15, 10, 29, 45, 30, 100, 50, 20,
-    };
-    size_t i, len = sizeof exps / sizeof exps[0];
-    vec* v = bt_post_order(&t);
-
-    for (i = 0; i < len; ++i) {
-        int* cur = vec_get_at(v, i);
-        int exp = exps[i];
-        ck_assert_ptr_nonnull(cur);
-        ck_assert_int_eq(*cur, exp);
-    }
-    vec_free(v, NULL);
+    int a0 = 45, a1 = 7, a2 = 69;
+    ck_assert_int_eq(bt_bfs(&t, &a0, cmp), true);
+    ck_assert_int_eq(bt_bfs(&t, &a1, cmp), true);
+    ck_assert_int_eq(bt_bfs(&t, &a2, cmp), false);
     binary_tree_free(&t, NULL);
 }
 END_TEST
@@ -103,11 +56,9 @@ static binary_tree tree(void) {
 Suite* ht_suite() {
     Suite* s;
     TCase* tc_core;
-    s = suite_create("tree traversal");
+    s = suite_create("bfs");
     tc_core = tcase_create("Core");
-    tcase_add_test(tc_core, test_pre_oder);
-    tcase_add_test(tc_core, test_in_order);
-    tcase_add_test(tc_core, test_post_order);
+    tcase_add_test(tc_core, test_bfs);
     suite_add_tcase(s, tc_core);
     return s;
 }

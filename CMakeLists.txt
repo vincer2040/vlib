@@ -33,6 +33,7 @@ add_library(
     src/bt_in_order.c
     src/bt_post_order.c
     src/avl_tree.c
+    src/bt_bfs.c
 )
 
 install(FILES build/libvlib.a DESTINATION "${INSTALL_PREFIX}/lib")

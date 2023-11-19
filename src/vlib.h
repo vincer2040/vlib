@@ -18,10 +18,12 @@
  *              - bubble sort (bubble_sort.c)
  *              - quick sort (quick_sort.c)
  *              - binary tree traversal (pre, in, and post order)
+ *              - breadth first search on binary tree (bt_bfs.c)
  */
 #ifndef __VLIB_H__
 #define __VLIB_H__
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -545,6 +547,14 @@ vec* bt_in_order(binary_tree* tree);
  * @returns vector of the data in post order, NULL on failure
  */
 vec* bt_post_order(binary_tree* tree);
+/**
+ * @brief search for a value in binary tree using breadth first search
+ * @param tree the tree to search
+ * @param needle the value to search for
+ * @param fn comparison function to tell if needle and current value are equal
+ * @returns true on found, false on not found
+ */
+bool bt_bfs(binary_tree* tree, void* needle, CmpFn* fn);
 
 /**
  * node in avl_tree struct
