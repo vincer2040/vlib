@@ -110,7 +110,7 @@ void bubble_sort(void* arr, size_t len, size_t data_size, CmpFn* fn);
 void quick_sort(void* arr, size_t len, size_t data_size, CmpFn* fn);
 
 #define VSTR_MAX_SMALL_SIZE 23
-#define VSTR_MAX_LARGE_SIZE (((uint64_t)(1)) << 56)
+#define VSTR_MAX_LARGE_SIZE ((((uint64_t)(1)) << 56) - 1)
 
 /**
  * @brief an optimized small string representation
