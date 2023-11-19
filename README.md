@@ -71,4 +71,75 @@ free a vstr:
 void vstr_free(vstr* s);
 ```
 
+### Vector
+
+A generic vector implementation
+
+#### Available Operations
+
+Allocate a new vector
+
+```
+vec* vec_new(size_t data_size);
+```
+
+Allocate a new vector with an initial capacity
+
+```
+vec* vec_new_with_capacity(size_t data_size, size_t capacity);
+```
+
+Append data to the vector
+
+```
+int vec_push(vec** vec, void* data);
+```
+
+Remove the most recently push element from the vector
+
+```
+int vec_pop(vec* vec, void* out);
+```
+
+Retrieve data from at an index
+
+```
+void* vec_get_at(vec* vec, size_t idx);
+```
+
+Remove an element at a specific index
+
+```
+int vec_remove_at(vec* vec, size_t idx, void* out);
+```
+
+Find an element in the vector using linear search
+
+```
+ssize_t vec_find(vec* vec, void* cmp_data, void* out, CmpFn* fn);
+```
+
+Free a vector
+
+```
+void vec_free(vec* vec, FreeFn* fn);
+```
+
+Search in a vector using binary search
+
+```
+int vec_binary_search(vec* vec, void* needle, CmpFn* fn);
+```
+
+Sort a vector using bubble sort
+
+```
+void vec_bubble_sort(vec* vec, CmpFn* fn);
+```
+
+Sort a vector using quick sort
+
+```
+void vec_quick_sort(vec* vec, CmpFn* fn);
+```
 
