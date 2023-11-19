@@ -143,3 +143,45 @@ Sort a vector using quick sort
 void vec_quick_sort(vec* vec, CmpFn* fn);
 ```
 
+### Queue
+
+A node based queue implementation
+
+#### Available Operations
+
+Create a new queue
+
+```
+queue queue_new(size_t data_size);
+```
+
+Get the number of elements in the queue
+
+```
+size_t queue_len(queue* q);
+```
+
+Get the element at the front of the queue without dequing
+
+```
+void* queue_peek(queue* q);
+```
+
+Enque data
+
+```
+int queue_enque(queue* q, void* data);
+```
+
+Deque data
+
+```
+int queue_deque(queue* q, void* out);
+```
+
+Free the queue
+
+```
+void queue_free(queue* q, FreeFn* fn);
+```
+
