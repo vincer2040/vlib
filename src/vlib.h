@@ -7,6 +7,7 @@
  *              Data structures:
  *              - String (vstr.c)
  *              - Vector (vec.c)
+ *              - Queue (queue.c)
  *              - Doubly linked list (list.c)
  *              - Priority Queue (Min-heap) (pq.c)
  *              - Hashtable (ht.c)
@@ -15,6 +16,7 @@
  *              - binary search (binary_search.c)
  *              - bubble sort (bubble_sort.c)
  *              - quick sort (quick_sort.c)
+ *              - binary tree traversal (pre, in, and post order)
  */
 #ifndef __VLIB_H__
 #define __VLIB_H__
