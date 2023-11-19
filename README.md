@@ -245,3 +245,34 @@ Free the whole list
 void list_free(list* list, FreeFn* fn);
 ```
 
+### Priority Queue
+
+A priority queue/min-heap implementation
+
+#### Available Operations
+
+Allocate a new pq
+
+```
+pq* pq_new(size_t data_size);
+```
+
+Insert data into priority queue
+
+```
+int pq_insert(pq** pq, void* value, CmpFn* fn);
+```
+
+Delete/poll from priority queue
+
+```
+int pq_delete(pq* pq, void* out, CmpFn* fn);
+```
+
+Free the while priority queue
+
+```
+void pq_free(pq* pq, FreeFn* fn);
+```
+
+
