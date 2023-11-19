@@ -546,6 +546,78 @@ vec* bt_in_order(binary_tree* tree);
 vec* bt_post_order(binary_tree* tree);
 
 /**
+ * node in avl_tree struct
+ */
+struct avl_node;
+
+/**
+ * @brief avl tree data structure
+ *
+ * Available operations
+ *      - insert (avl_insert)
+ *      - delete (avl_delete)
+ *      - pre order traversal (avl_pre_order)
+ *      - in order traversal (avl_in_order)
+ *      - post order traversal (avl_post_order)
+ */
+typedef struct {
+    size_t num_el;
+    size_t key_size;
+    struct avl_node* root;
+} avl_tree;
+
+/**
+ * @brief create a new avl tree
+ * @param key_size the size of the key stored in the tree's nodes
+ * @returns avl_tree
+ */
+avl_tree avl_tree_new(size_t key_size);
+/**
+ * @brief insert a key into the tree
+ * @param tree the tree to insert into
+ * @param key the key to insert
+ * @param fn comparison function to determine if keys are equal, less than, or
+ * greater than
+ * @returns 0 on success, -1 on failure
+ */
+int avl_insert(avl_tree* tree, void* key, CmpFn* fn);
+/**
+ * @brief delete a key from the tree
+ * @param tree the tree to delete from
+ * @param key the key to delete
+ * @param cmp_fn comparison function to determine if keys are equal, less than,
+ * or greater than
+ * @param free_fn optional callback function to free the key in the deleted
+ * node. If null, it is ignored
+ * @returns 0 on success, -1 on failure
+ */
+int avl_delete(avl_tree* tree, void* key, CmpFn* cmp_fn, FreeFn* free_fn);
+/**
+ * @brief pre order traversal of the tree
+ * @param tree the tree to do the traversal
+ * @returns vector of keys in pre order, NULL on failure
+ */
+vec* avl_pre_order(avl_tree* tree);
+/**
+ * @brief in order traversal of the tree
+ * @param tree the tree to do the traversal
+ * @returns vector of keys in  order, NULL on failure
+ */
+vec* avl_in_order(avl_tree* tree);
+/**
+ * @brief post order traversal of the tree
+ * @param tree the tree to do the traversal
+ * @returns vector of keys in post order, NULL on failure
+ */
+vec* avl_post_order(avl_tree* tree);
+/**
+ * @brief free the tree
+ * @param fn optional callback function to free the data in the nodes. If null,
+ * it is ignored
+ */
+void avl_tree_free(avl_tree* tree, FreeFn* fn);
+
+/**
  * @brief priority queue implementation
  *
  * Available operations:
