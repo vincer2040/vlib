@@ -88,6 +88,16 @@ target_include_directories(bfs_test PUBLIC "${PROJECT_BINARY_DIR}")
 add_test(NAME bfs_test COMMAND bfs_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
 set_tests_properties(bfs_test PROPERTIES TIMEOUT 30)
 
+# bt compare
+add_executable(bt_compare_test bt_compare_test.c)
+
+target_link_libraries(bt_compare_test PUBLIC vlib check pthread)
+
+target_include_directories(bt_compare_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME bt_compare_test COMMAND bt_compare_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(bt_compare_test PROPERTIES TIMEOUT 30)
+
 # pq
 add_executable(pq_test pq_test.c)
 

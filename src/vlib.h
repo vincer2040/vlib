@@ -19,6 +19,7 @@
  *              - quick sort (quick_sort.c)
  *              - binary tree traversal (pre, in, and post order)
  *              - breadth first search on binary tree (bt_bfs.c)
+ *              - binary tree comparison (bt_compare.c)
  */
 #ifndef __VLIB_H__
 #define __VLIB_H__
@@ -555,6 +556,14 @@ vec* bt_post_order(binary_tree* tree);
  * @returns true on found, false on not found
  */
 bool bt_bfs(binary_tree* tree, void* needle, CmpFn* fn);
+/**
+ * @brief compare two binary trees
+ * @param a binary tree to compare
+ * @param b binary tree to compare
+ * @param fn comparison function to tell if data in a is equal to data in b
+ * @returns true if equal, false if not equal
+ */
+bool bt_compare(binary_tree* a, binary_tree* b, CmpFn* fn);
 
 /**
  * node in avl_tree struct
