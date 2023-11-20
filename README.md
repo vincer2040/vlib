@@ -323,3 +323,52 @@ free the whole table
 void ht_free(ht* ht, FreeFn* free_key, FreeFn* free_val);
 ```
 
+### AVL Tree
+
+an avl tree implementation
+
+#### Available Operations
+
+create a new avl tree
+
+```
+avl_tree avl_tree_new(size_t key_size);
+```
+
+insert a key into the tree
+
+```
+int avl_insert(avl_tree* tree, void* key, CmpFn* fn);
+```
+
+delete a key from the tree
+
+```
+int avl_delete(avl_tree* tree, void* key, CmpFn* cmp_fn, FreeFn* free_fn);
+```
+
+pre order traversal of the tree
+
+```
+vec* avl_pre_order(avl_tree* tree);
+```
+
+in order traversal of the tree
+
+```
+vec* avl_in_order(avl_tree* tree);
+```
+
+post order traversal of the tree
+
+```
+vec* avl_post_order(avl_tree* tree);
+```
+
+free the tree
+
+```
+void avl_tree_free(avl_tree* tree, FreeFn* fn);
+```
+
+
