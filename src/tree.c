@@ -112,6 +112,7 @@ int tree_delete(tree* tree, void* key, CmpFn* cmp_fn, FreeFn* free_fn) {
     } else {
         tree_node_delete(NULL, node, key_size, idx, free_fn);
     }
+    tree->num_el--;
     return 0;
 }
 
