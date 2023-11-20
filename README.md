@@ -372,3 +372,40 @@ void avl_tree_free(avl_tree* tree, FreeFn* fn);
 ```
 
 
+### Generic Tree
+
+a generic tree implementation
+
+#### Available Operations
+
+
+create a new tree
+
+```
+tree tree_new(size_t key_size);
+```
+
+determine if a key is in the tree
+
+```
+bool tree_has(tree* tree, void* key, CmpFn* fn);
+```
+
+insert a key into the tree
+
+```
+int tree_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
+```
+
+delete a key from the tree
+
+```
+int tree_delete(tree* tree, void* key, CmpFn* cmp_fn, FreeFn* free_fn);
+```
+
+free the whole tree
+
+```
+void tree_free(tree* tree, FreeFn* fn);
+```
+
