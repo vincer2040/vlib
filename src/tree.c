@@ -84,7 +84,7 @@ int tree_insert(tree* tree, void* key, void* par_key, CmpFn* fn) {
     return insert_res;
 }
 
-bool tree_has(tree* tree, void* key, CmpFn* fn) {
+bool tree_depth_first_find(tree* tree, void* key, CmpFn* fn) {
     tree_node** node;
     size_t idx;
     if (tree->root == NULL) {
@@ -95,6 +95,36 @@ bool tree_has(tree* tree, void* key, CmpFn* fn) {
         return false;
     }
     return true;
+}
+
+bool tree_breadth_first_find(tree* tree, void* key, CmpFn* fn) {
+    queue q;
+    size_t offset;
+    if (tree->root == NULL) {
+        return false;
+    }
+    q = queue_new(sizeof(tree_node*));
+    queue_enque(&q, &(tree->root));
+    offset = tree_offset(tree->key_size);
+    while (q.len) {
+        tree_node* cur;
+        int cmp;
+        size_t i, len;
+        queue_deque(&q, &cur);
+        cmp = fn(key, cur->data);
+        if (cmp == 0) {
+            queue_free(&q, NULL);
+            return true;
+        }
+        len = cur->len;
+        for (i = 0; i < len; ++i) {
+            tree_node** child =
+                (tree_node**)(cur->data + offset + (sizeof(tree_node*) * i));
+            queue_enque(&q, child);
+        }
+    }
+    queue_free(&q, NULL);
+    return false;
 }
 
 int tree_delete(tree* tree, void* key, CmpFn* cmp_fn, FreeFn* free_fn) {

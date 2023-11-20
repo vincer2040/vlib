@@ -670,7 +670,8 @@ tree tree_new(size_t key_size);
  * @param fn comparison function to determine if keys are equal
  * @returns true on found, false on not found
  */
-bool tree_has(tree* tree, void* key, CmpFn* fn);
+bool tree_depth_first_find(tree* tree, void* key, CmpFn* fn);
+bool tree_breadth_first_find(tree* tree, void* key, CmpFn* fn);
 /**
  * @brief insert a key into the tree
  * @param tree the tree to insert into

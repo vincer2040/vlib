@@ -21,14 +21,19 @@ START_TEST(tree_test) {
     ck_assert_int_eq(tree_insert(&t, &a3, &a1, cmp), 0);
     ck_assert_int_eq(tree_insert(&t, &a4, &a3, cmp), 0);
     ck_assert_int_eq(tree_insert(&t, &a5, &a2, cmp), 0);
-    ck_assert_int_eq(tree_has(&t, &a5, cmp), true);
-    ck_assert_int_eq(tree_has(&t, &not_in, cmp), false);
+    ck_assert_int_eq(tree_depth_first_find(&t, &a5, cmp), true);
+    ck_assert_int_eq(tree_depth_first_find(&t, &not_in, cmp), false);
+    ck_assert_int_eq(tree_breadth_first_find(&t, &a5, cmp), true);
+    ck_assert_int_eq(tree_breadth_first_find(&t, &not_in, cmp), false);
     ck_assert_int_eq(tree_delete(&t, &a5, cmp, NULL), 0);
     ck_assert_int_eq(tree_delete(&t, &a3, cmp, NULL), 0);
     ck_assert_int_eq(tree_delete(&t, &not_in, cmp, NULL), -1);
-    ck_assert_int_eq(tree_has(&t, &a0, cmp), true);
-    ck_assert_int_eq(tree_has(&t, &a5, cmp), false);
-    ck_assert_int_eq(tree_has(&t, &a3, cmp), false);
+    ck_assert_int_eq(tree_depth_first_find(&t, &a0, cmp), true);
+    ck_assert_int_eq(tree_depth_first_find(&t, &a5, cmp), false);
+    ck_assert_int_eq(tree_depth_first_find(&t, &a3, cmp), false);
+    ck_assert_int_eq(tree_breadth_first_find(&t, &a0, cmp), true);
+    ck_assert_int_eq(tree_breadth_first_find(&t, &a5, cmp), false);
+    ck_assert_int_eq(tree_breadth_first_find(&t, &a3, cmp), false);
     tree_free(&t, NULL);
 }
 END_TEST
