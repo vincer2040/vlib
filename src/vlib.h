@@ -664,13 +664,20 @@ typedef struct {
  */
 tree tree_new(size_t key_size);
 /**
- * @brief determine if a key is in the tree
+ * @brief determine if a key is in the tree using depth first search
  * @param tree the tree to search in
  * @param key the key to search for
  * @param fn comparison function to determine if keys are equal
  * @returns true on found, false on not found
  */
 bool tree_depth_first_find(tree* tree, void* key, CmpFn* fn);
+/**
+ * @brief determine if a key is in the tree using breadth first search
+ * @param tree the tree to search in
+ * @param key the key to search for
+ * @param fn comparison function to determine if keys are equal
+ * @returns true on found, false on not found
+ */
 bool tree_breadth_first_find(tree* tree, void* key, CmpFn* fn);
 /**
  * @brief insert a key into the tree
