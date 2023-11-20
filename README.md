@@ -10,7 +10,8 @@ A pure C data structure and and algorithms library
 - Doubly Linked List
 - Priotity Queue
 - Hashtable
-- AVL tree
+- AVL Tree
+- Generic Tree
 
 ## Algorithms included
 
@@ -275,4 +276,50 @@ Free the while priority queue
 void pq_free(pq* pq, FreeFn* fn);
 ```
 
+### Hashtable
+
+A hashtable implementation
+
+- uses siphash 1-2 for hashing
+
+- uses buckets of vectors for handling collisions
+
+#### Available Operations
+
+create a new hashtable
+
+```
+ht ht_new(size_t data_size);
+```
+
+get the number of entries in a table
+
+```
+size_t ht_len(ht* ht);
+```
+
+insert a value into the table
+
+```
+int ht_insert(ht* ht, void* key, size_t key_len, void* value, FreeFn* fn);
+```
+
+retrieve an entry from the table
+
+```
+void* ht_get(ht* ht, void* key, size_t key_len);
+```
+
+remove an entry from the table
+
+```
+int ht_delete(ht* ht, void* key, size_t key_len, FreeFn* free_key,
+              FreeFn* free_val);
+```
+
+free the whole table
+
+```
+void ht_free(ht* ht, FreeFn* free_key, FreeFn* free_val);
+```
 
