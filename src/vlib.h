@@ -467,7 +467,7 @@ int list_remove(list* list, void* data, void* out, CmpFn* cmp_fn);
 int list_remove_at(list* list, size_t idx, void* out);
 /**
  * @brief append data to end of the list
- * @brief list the list to append
+ * @param list the list to append
  * @param data the data to append
  * @returns 0 on success, -1 on failure
  */
