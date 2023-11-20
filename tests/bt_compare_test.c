@@ -11,13 +11,13 @@ int cmp(void* a, void* b) {
     return ai - bi;
 }
 
-static binary_tree tree(void);
-static binary_tree tree2(void);
+static binary_tree tree_test(void);
+static binary_tree tree2_test(void);
 
 START_TEST(cmp_test) {
-    binary_tree t1 = tree();
-    binary_tree t2 = tree();
-    binary_tree t3 = tree2();
+    binary_tree t1 = tree_test();
+    binary_tree t2 = tree_test();
+    binary_tree t3 = tree2_test();
 
     ck_assert_int_eq(bt_compare(&t1, &t2, cmp), true);
     ck_assert_int_eq(bt_compare(&t1, &t3, cmp), false);
@@ -27,7 +27,7 @@ START_TEST(cmp_test) {
 }
 END_TEST
 
-static binary_tree tree(void) {
+static binary_tree tree_test(void) {
     binary_tree tree = {0};
     size_t data_size = sizeof(int);
     int a0 = 20, a1 = 50, a2 = 100, a3 = 30, a4 = 45, a5 = 29, a6 = 10, a7 = 15,
@@ -57,10 +57,9 @@ static binary_tree tree(void) {
     return tree;
 }
 
-static binary_tree tree2(void) {
-    binary_tree tree = {0};
-    int a0 = 20, a1 = 50, a2 = 30, a3 = 45, a4 = 49, a5 = 29, a6 = 21, a7 = 10,
-        a8 = 15, a9 = 5, a10 = 7;
+static binary_tree tree2_test(void) {
+    binary_tree tree = { 0 };
+    int a0 = 20, a1 = 50, a2 = 30, a3 = 45, a4 = 49, a5 = 29, a6 = 21, a7 = 10, a8 = 15, a9 = 5, a10 = 7;
     size_t data_size = sizeof(int);
     binary_node* n0 = binary_node_new(&a0, data_size);
     binary_node* n1 = binary_node_new(&a1, data_size);

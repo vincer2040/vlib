@@ -11,10 +11,10 @@ int cmp(void* a, void* b) {
     return ai - bi;
 }
 
-static binary_tree tree(void);
+static binary_tree tree_test(void);
 
 START_TEST(test_bfs) {
-    binary_tree t = tree();
+    binary_tree t = tree_test();
     int a0 = 45, a1 = 7, a2 = 69;
     ck_assert_int_eq(bt_bfs(&t, &a0, cmp), true);
     ck_assert_int_eq(bt_bfs(&t, &a1, cmp), true);
@@ -23,7 +23,7 @@ START_TEST(test_bfs) {
 }
 END_TEST
 
-static binary_tree tree(void) {
+static binary_tree tree_test(void) {
     binary_tree tree = {0};
     size_t data_size = sizeof(int);
     int a0 = 20, a1 = 50, a2 = 100, a3 = 30, a4 = 45, a5 = 29, a6 = 10, a7 = 15,

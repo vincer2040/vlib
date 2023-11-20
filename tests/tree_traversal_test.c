@@ -11,10 +11,10 @@ int cmp(void* a, void* b) {
     return ai - bi;
 }
 
-static binary_tree tree(void);
+static binary_tree tree_test(void);
 
 START_TEST(test_pre_oder) {
-    binary_tree t = tree();
+    binary_tree t = tree_test();
     int exps[] = {
         20, 10, 5, 7, 15, 50, 30, 29, 45, 100,
     };
@@ -33,7 +33,7 @@ START_TEST(test_pre_oder) {
 END_TEST
 
 START_TEST(test_in_order) {
-    binary_tree t = tree();
+    binary_tree t = tree_test();
     int exps[] = {
         5, 7, 10, 15, 20, 29, 30, 45, 50, 100,
     };
@@ -52,7 +52,7 @@ START_TEST(test_in_order) {
 END_TEST
 
 START_TEST(test_post_order) {
-    binary_tree t = tree();
+    binary_tree t = tree_test();
     int exps[] = {
         7, 5, 15, 10, 29, 45, 30, 100, 50, 20,
     };
@@ -70,7 +70,7 @@ START_TEST(test_post_order) {
 }
 END_TEST
 
-static binary_tree tree(void) {
+static binary_tree tree_test(void) {
     binary_tree tree = {0};
     size_t data_size = sizeof(int);
     int a0 = 20, a1 = 50, a2 = 100, a3 = 30, a4 = 45, a5 = 29, a6 = 10, a7 = 15,
