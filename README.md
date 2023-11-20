@@ -4,14 +4,14 @@ A pure C data structure and and algorithms library
 
 ## Data structures included
 
-- String
-- Vector
-- Queue
-- Doubly Linked List
-- Priotity Queue
-- Hashtable
-- AVL Tree
-- Generic Tree
+- [String](#string)
+- [Vector](#vector)
+- [Queue](#queue)
+- [Doubly Linked List](#doubly-linked-list)
+- [Priotity Queue](#priority-queue)
+- [Hashtable](#hashtable)
+- [AVL Tree](#avl-tree)
+- [Generic Tree](#generic-tree)
 
 ## Algorithms included
 
