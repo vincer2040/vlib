@@ -171,6 +171,7 @@ static int tree_node_insert(tree_node** parent, tree_node** node,
     if (len == cap) {
         int realloc_res = tree_node_realloc(parent, key_size);
         if (realloc_res == -1) {
+            tree_node_free(*node, key_size, NULL);
             return -1;
         }
     }
