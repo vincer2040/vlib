@@ -2,6 +2,9 @@
 
 A pure C data structure and and algorithms library
 
+The goal of this project is to provide reusable, fast, and efficient
+data structures
+
 ## Data structures included
 
 - [String](#string)
@@ -21,6 +24,52 @@ A pure C data structure and and algorithms library
 - Binary tree traversals
 - Binary tree breadth first search
 - Binary tree comparison
+
+## Getting started
+
+### Requirements
+
+- cmake >= 3.10
+
+- gcc
+
+- for testing (optional) [libcheck](https://github.com/libcheck/check)
+
+### Installing
+
+1. Ensure you have the items listed in [Requirements](#requirements)
+
+2. Clone this repo
+
+```
+git clone git@github.com:vincer2040/vlib.git
+cd vlib
+```
+
+3. Build it
+
+```
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make vlib
+```
+
+4. Optionally run tests
+
+from within the build directory:
+
+```
+make
+make test
+```
+
+5. Install
+
+the default path is /usr/local/lib
+
+```
+make install
+```
 
 ### String
 
