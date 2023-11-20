@@ -385,10 +385,16 @@ create a new tree
 tree tree_new(size_t key_size);
 ```
 
-determine if a key is in the tree
+determine if a key is in the tree using depth first search
 
 ```
-bool tree_has(tree* tree, void* key, CmpFn* fn);
+bool tree_depth_first_find(tree* tree, void* key, CmpFn* fn);
+```
+
+determine if a key is in the tree using breadth first search
+
+```
+bool tree_breadth_first_find(tree* tree, void* key, CmpFn* fn);
 ```
 
 insert a key into the tree
