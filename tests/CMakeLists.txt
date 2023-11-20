@@ -127,3 +127,13 @@ target_include_directories(avl_test PUBLIC "${PROJECT_BINARY_DIR}")
 
 add_test(NAME avl_test COMMAND avl_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
 set_tests_properties(avl_test PROPERTIES TIMEOUT 30)
+
+# tree
+add_executable(tree_test tree_test.c)
+
+target_link_libraries(tree_test PUBLIC vlib check pthread)
+
+target_include_directories(tree_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME tree_test COMMAND tree_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(tree_test PROPERTIES TIMEOUT 30)

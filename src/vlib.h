@@ -638,6 +638,66 @@ vec* avl_post_order(avl_tree* tree);
 void avl_tree_free(avl_tree* tree, FreeFn* fn);
 
 /**
+ * node in tree data structure
+ */
+struct tree_node;
+
+/**
+ * @brief a generic tree structure
+ *
+ * Available operations
+ *      - insert (tree_insert)
+ *      - has (tree_has)
+ *      - delete (tree_delete)
+ */
+typedef struct {
+    size_t num_el;          /* number of elements in the tree */
+    size_t key_size;        /* size of the keys in the tree */
+    struct tree_node* root; /* root node */
+} tree;
+
+/**
+ * @brief create a new tree
+ * @param key_size size of the key in the tree
+ * @returns newly created tree
+ */
+tree tree_new(size_t key_size);
+/**
+ * @brief determine if a key is in the tree
+ * @param tree the tree to search in
+ * @param key the key to search for
+ * @param fn comparison function to determine if keys are equal
+ * @returns true on found, false on not found
+ */
+bool tree_has(tree* tree, void* key, CmpFn* fn);
+/**
+ * @brief insert a key into the tree
+ * @param tree the tree to insert into
+ * @param key the key to insert
+ * @param par_key the parent key to insert the child into
+ * @param fn comparison function to determine if keys are equal
+ * @returns 0 on success, -1 on failure
+ */
+int tree_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
+/**
+ * @brief delete a key from the tree
+ * @param tree the tree to delete from
+ * @param key the key to delete
+ * @param cmp_fn comparison function to determine if keys are equal
+ * @param free_fn option callback function to free the key in the deleted node.
+ * If null, it is ignored
+ * @returns 0 on success, -1 on failure
+ */
+int tree_delete(tree* tree, void* key, CmpFn* cmp_fn, FreeFn* free_fn);
+/**
+ * @brief free the whole tree
+ * @param tree the tree to free
+ * @param fn option callback function to free the key in the deleted node. If
+ * null, it is ignored
+ */
+void tree_free(tree* tree, FreeFn* fn);
+
+/**
  * @brief priority queue implementation
  *
  * Available operations:

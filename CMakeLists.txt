@@ -35,6 +35,7 @@ add_library(
     src/avl_tree.c
     src/bt_bfs.c
     src/bt_compare.c
+    src/tree.c
 )
 
 install(FILES build/libvlib.a DESTINATION "${INSTALL_PREFIX}/lib")
