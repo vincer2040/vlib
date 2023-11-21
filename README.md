@@ -15,6 +15,7 @@ data structures
 - [Hashtable](#hashtable)
 - [AVL Tree](#avl-tree)
 - [Generic Tree](#generic-tree)
+- [LRU](#lru)
 
 ## Algorithms included
 
@@ -462,5 +463,35 @@ free the whole tree
 
 ```
 void tree_free(tree* tree, FreeFn* fn);
+```
+
+### LRU
+
+an least recently used cache implementation
+
+#### Available Operations
+
+create a new lru
+
+```
+lru lru_new(size_t cap, size_t data_size, CmpFn* cmp_keys);
+```
+
+update a key in the lru
+
+```
+int lru_update(lru* l, void* key, size_t key_len, void* value, FreeFn* fn);
+```
+
+get a value from the lru
+
+```
+void* lru_get(lru* l, void* key, size_t key_len);
+```
+
+free the lru
+
+```
+void lru_free(lru* l, FreeFn* free_key, FreeFn* free_val);
 ```
 
