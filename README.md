@@ -196,6 +196,12 @@ sort a vector using insertion sort
 void vec_insertion_sort(vec* vec, CmpFn* fn);
 ```
 
+sort a vector using merge sort
+
+```c
+void vec_merge_sort(vec* vec, CmpFn* fn);
+```
+
 Sort a vector using quick sort
 
 ```c
