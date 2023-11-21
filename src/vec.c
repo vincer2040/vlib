@@ -143,6 +143,11 @@ void vec_insertion_sort(vec* vec, CmpFn* fn) {
     insertion_sort(vec->data, len, data_size, fn);
 }
 
+void vec_merge_sort(vec* vec, CmpFn* fn) {
+    size_t len = vec->len, data_size = vec->data_size;
+    merge_sort(vec->data, len, data_size, fn);
+}
+
 void vec_quick_sort(vec* vec, CmpFn* fn) {
     size_t len = vec->len, data_size = vec->data_size;
     quick_sort(vec->data, len, data_size, fn);

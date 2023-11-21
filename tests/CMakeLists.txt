@@ -58,6 +58,16 @@ target_include_directories(insertion_sort_test PUBLIC "${PROJECT_BINARY_DIR}")
 add_test(NAME insertion_sort_test COMMAND insertion_sort_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
 set_tests_properties(insertion_sort_test PROPERTIES TIMEOUT 30)
 
+# merge sort
+add_executable(merge_sort_test merge_sort_test.c)
+
+target_link_libraries(merge_sort_test PUBLIC vlib check pthread)
+
+target_include_directories(merge_sort_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME merge_sort_test COMMAND merge_sort_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(merge_sort_test PROPERTIES TIMEOUT 30)
+
 # quick sort
 add_executable(quick_sort_test quick_sort_test.c)
 

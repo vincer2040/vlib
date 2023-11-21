@@ -18,6 +18,7 @@
  *              - binary search (binary_search.c)
  *              - bubble sort (bubble_sort.c)
  *              - insertion sort (insertion_sort.c)
+ *              - merge sort (merge_sort.c)
  *              - quick sort (quick_sort.c)
  *              - binary tree traversal (pre, in, and post order)
  *              - breadth first search on binary tree (bt_bfs.c)
@@ -110,6 +111,15 @@ void bubble_sort(void* arr, size_t len, size_t data_size, CmpFn* fn);
  * than, or greater than each other
  */
 void insertion_sort(void* arr, size_t len, size_t data_size, CmpFn* fn);
+/**
+ * @brief merge sort implementation
+ * @param arr the array to sort
+ * @param len the number of elements in the array
+ * @param data_size the size of each element in the arary
+ * @param fn the comparison function to determine if elements are equal to, less
+ * than, or greater than each other
+ */
+void merge_sort(void* arr, size_t len, size_t data_size, CmpFn* fn);
 /**
  * @brief quick sort implementation
  * @param arr the arary to sort
@@ -339,6 +349,13 @@ void vec_bubble_sort(vec* vec, CmpFn* fn);
  * less than, or greater than
  */
 void vec_insertion_sort(vec* vec, CmpFn* fn);
+/**
+ * @brief sort the vector using merge sort
+ * @param vec the vector to sort
+ * @praram fn the comparison function used to determine if elements are equal,
+ * less than, or greater than
+ */
+void vec_merge_sort(vec* vec, CmpFn* fn);
 /**
  * @brief sort the vector using quick sort
  * @param vec the vector to sort

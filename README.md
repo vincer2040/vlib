@@ -22,6 +22,7 @@ data structures
 - Binary search
 - Bubble sort
 - Insertion sort
+- Merge sort
 - Quick sort
 - Binary tree traversals
 - Binary tree breadth first search
