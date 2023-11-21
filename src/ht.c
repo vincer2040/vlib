@@ -28,13 +28,14 @@ static ht_entry* ht_entry_new(void* key, size_t key_len, void* data,
                               size_t data_size);
 static void ht_entry_free(ht_entry* entry, FreeFn* free_key, FreeFn* free_val);
 
-ht ht_new(size_t data_size) {
+ht ht_new(size_t data_size, CmpFn* cmp_key) {
     ht ht = {0};
     ht.buckets = calloc(HT_INITIAL_CAP, sizeof(ht_bucket));
     assert(ht.buckets != NULL);
     ht.cap = HT_INITIAL_CAP;
     ht.len = 0;
     ht.data_size = data_size;
+    ht.cmp_key = cmp_key;
     get_random_bytes(ht.seed, HT_SEED_SIZE);
     return ht;
 }
@@ -83,16 +84,29 @@ int ht_insert(ht* ht, void* key, size_t key_len, void* value, FreeFn* fn) {
 
     for (i = 0; i < len; ++i) {
         ht_entry* cur = bucket->entries[i];
-        size_t cur_key_len = cur->key_len;
-        if ((key_len == cur_key_len) &&
-            (memcmp(key, cur->data, key_len) == 0)) {
-            size_t offset = key_len + ht_padding(key_len);
-            void* ptr = cur->data + offset;
-            if (fn) {
-                fn(ptr);
+        if (ht->cmp_key) {
+            int cmp = ht->cmp_key(cur->data, key);
+            if (cmp == 0) {
+                size_t offset = key_len + ht_padding(key_len);
+                if (fn) {
+                    void* ptr = cur->data + offset;
+                    fn(ptr);
+                }
+                memcpy(cur->data + offset, value, data_size);
+                return 0;
             }
-            memcpy(cur->data + offset, value, data_size);
-            return 0;
+        } else {
+            size_t cur_key_len = cur->key_len;
+            if ((key_len == cur_key_len) &&
+                (memcmp(key, cur->data, key_len) == 0)) {
+                size_t offset = key_len + ht_padding(key_len);
+                void* ptr = cur->data + offset;
+                if (fn) {
+                    fn(ptr);
+                }
+                memcpy(cur->data + offset, value, data_size);
+                return 0;
+            }
         }
     }
 
@@ -123,12 +137,21 @@ void* ht_get(ht* ht, void* key, size_t key_len) {
     }
     for (i = 0; i < len; ++i) {
         ht_entry* cur = bucket.entries[i];
-        size_t cur_key_len = cur->key_len;
-        if ((cur_key_len == key_len) &&
-            (memcmp(key, cur->data, key_len) == 0)) {
-            size_t offset = key_len + ht_padding(key_len);
-            void* ptr = cur->data + offset;
-            return ptr;
+        if (ht->cmp_key) {
+            int cmp = ht->cmp_key(key, cur->data);
+            if (cmp == 0) {
+                size_t offset = key_len + ht_padding(key_len);
+                void* ptr = cur->data + offset;
+                return ptr;
+            }
+        } else {
+            size_t cur_key_len = cur->key_len;
+            if ((cur_key_len == key_len) &&
+                (memcmp(key, cur->data, key_len) == 0)) {
+                size_t offset = key_len + ht_padding(key_len);
+                void* ptr = cur->data + offset;
+                return ptr;
+            }
         }
     }
     return NULL;
@@ -145,12 +168,21 @@ int ht_delete(ht* ht, void* key, size_t key_len, FreeFn* free_key,
 
     for (i = 0; i < len; ++i) {
         ht_entry* cur = bucket->entries[i];
-        size_t cur_key_len = cur->key_len;
-        if ((cur_key_len == key_len) &&
-            (memcmp(key, cur->data, key_len) == 0)) {
-            ht_bucket_remove(bucket, i, free_key, free_val);
-            ht->len--;
-            return 0;
+        if (ht->cmp_key) {
+            int cmp = ht->cmp_key(key, cur->data);
+            if (cmp == 0) {
+                ht_bucket_remove(bucket, i, free_key, free_val);
+                ht->len--;
+                return 0;
+            }
+        } else {
+            size_t cur_key_len = cur->key_len;
+            if ((cur_key_len == key_len) &&
+                (memcmp(key, cur->data, key_len) == 0)) {
+                ht_bucket_remove(bucket, i, free_key, free_val);
+                ht->len--;
+                return 0;
+            }
         }
     }
     return -1;

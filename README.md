@@ -338,7 +338,7 @@ A hashtable implementation
 create a new hashtable
 
 ```
-ht ht_new(size_t data_size);
+ht ht_new(size_t data_size, CmpFn* cmp_keys);
 ```
 
 get the number of entries in a table

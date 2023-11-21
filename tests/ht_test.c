@@ -8,7 +8,7 @@
 START_TEST(test_ht) {
     int a0 = 5, a1 = 7, a2 = 9, a3 = 11, a4 = 69;
     int* get;
-    ht ht = ht_new(sizeof(int));
+    ht ht = ht_new(sizeof(int), NULL);
     ht_insert(&ht, "a0", 2, &a0, NULL);
     ht_insert(&ht, "a1", 2, &a1, NULL);
     ht_insert(&ht, "a2", 2, &a2, NULL);

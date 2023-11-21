@@ -780,6 +780,7 @@ typedef struct {
     size_t len;       /* the number of entries in the table */
     size_t cap;       /* the number of slots available in the table */
     size_t data_size; /* the size of the data in the table */
+    CmpFn* cmp_key;
     unsigned char seed[HT_SEED_SIZE]; /* seed used to hash the keys*/
     ht_bucket* buckets;               /* slots of the table */
 } ht;
@@ -787,9 +788,10 @@ typedef struct {
 /**
  * @brief create a new hashtable
  * @param data_size the size of the data to store
+ * @param cmp_key optional function to compare keys
  * @return hashtable
  */
-ht ht_new(size_t data_size);
+ht ht_new(size_t data_size, CmpFn* cmp_key);
 /**
  * @brief get the number of entries in a table
  * @param ht the table to get the number of entries in
