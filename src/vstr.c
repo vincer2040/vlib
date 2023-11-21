@@ -31,6 +31,21 @@ vstr vstr_from(const char* cstr) {
     return s;
 }
 
+vstr vstr_from_len(const char* cstr, size_t len) {
+    vstr s = { 0 };
+    if (len > VSTR_MAX_SMALL_SIZE) {
+        s.str_data.lg = vstr_make_lg_len(cstr, len);
+        if (s.str_data.lg.cap == 0) {
+            return s;
+        }
+        s.is_large = 1;
+        return s;
+    }
+    memcpy(s.str_data.sm.data, cstr, len);
+    s.small_avail = VSTR_MAX_SMALL_SIZE - len;
+    return s;
+}
+
 size_t vstr_len(vstr* s) {
     if (s->is_large) {
         return s->str_data.lg.len;
