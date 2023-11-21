@@ -17,6 +17,7 @@
  *              Algorithms:
  *              - binary search (binary_search.c)
  *              - bubble sort (bubble_sort.c)
+ *              - insertion sort (insertion_sort.c)
  *              - quick sort (quick_sort.c)
  *              - binary tree traversal (pre, in, and post order)
  *              - breadth first search on binary tree (bt_bfs.c)
@@ -100,6 +101,15 @@ int binary_search(void* arr, void* needle, size_t len, size_t data_size,
  * than, or greater than each other
  */
 void bubble_sort(void* arr, size_t len, size_t data_size, CmpFn* fn);
+/**
+ * @brief insertion sort implementation
+ * @param arr the array to sort
+ * @param len the number of elements in the array
+ * @param data_size the size of each element in the arary
+ * @param fn the comparison function to determine if elements are equal to, less
+ * than, or greater than each other
+ */
+void insertion_sort(void* arr, size_t len, size_t data_size, CmpFn* fn);
 /**
  * @brief quick sort implementation
  * @param arr the arary to sort
@@ -235,6 +245,7 @@ void vstr_free(vstr* s);
  *      - linear find (vec_find)
  *      - binary search (vec_binary_search)
  *      - bubble sort (vec_bubble_sort)
+ *      - insertion sort (vec_insertion_sort)
  *      - quick sort (vec_quick_sort)
  */
 typedef struct {
@@ -321,6 +332,13 @@ int vec_binary_search(vec* vec, void* needle, CmpFn* fn);
  * less than, or greater than
  */
 void vec_bubble_sort(vec* vec, CmpFn* fn);
+/**
+ * @brief sort the vector using insertion sort
+ * @param vec the vector to sort
+ * @praram fn the comparison function used to determine if elements are equal,
+ * less than, or greater than
+ */
+void vec_insertion_sort(vec* vec, CmpFn* fn);
 /**
  * @brief sort the vector using quick sort
  * @param vec the vector to sort

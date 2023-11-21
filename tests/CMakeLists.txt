@@ -48,6 +48,16 @@ target_include_directories(bubble_sort_test PUBLIC "${PROJECT_BINARY_DIR}")
 add_test(NAME bubble_sort_test COMMAND bubble_sort_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
 set_tests_properties(bubble_sort_test PROPERTIES TIMEOUT 30)
 
+# insertion sort
+add_executable(insertion_sort_test insertion_sort_test.c)
+
+target_link_libraries(insertion_sort_test PUBLIC vlib check pthread)
+
+target_include_directories(insertion_sort_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME insertion_sort_test COMMAND insertion_sort_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(insertion_sort_test PROPERTIES TIMEOUT 30)
+
 # quick sort
 add_executable(quick_sort_test quick_sort_test.c)
 

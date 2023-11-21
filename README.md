@@ -21,6 +21,7 @@ data structures
 
 - Binary search
 - Bubble sort
+- Insertion sort
 - Quick sort
 - Binary tree traversals
 - Binary tree breadth first search
@@ -186,6 +187,12 @@ Sort a vector using bubble sort
 
 ```c
 void vec_bubble_sort(vec* vec, CmpFn* fn);
+```
+
+sort a vector using insertion sort
+
+```c
+void vec_insertion_sort(vec* vec, CmpFn* fn);
 ```
 
 Sort a vector using quick sort
