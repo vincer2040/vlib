@@ -182,6 +182,13 @@ vstr vstr_new(void);
  */
 vstr vstr_from(const char* cstr);
 /**
+ * @brief create a new vstr from a traditional C string of length len
+ * @param cstr the C style string
+ * @param len the length of the C str
+ * @returns a vstr struct representing cstr
+ */
+vstr vstr_from_len(const char* cstr, size_t len);
+/**
  * @brief get the length of a vstr
  * @param s pointer to the vstr
  * @returns length of the vstr
@@ -839,5 +846,57 @@ int ht_delete(ht* ht, void* key, size_t key_len, FreeFn* free_key,
  * ignored
  */
 void ht_free(ht* ht, FreeFn* free_key, FreeFn* free_val);
+
+/**
+ * @brief an lru data structure
+ *
+ * Available operations
+ *
+ *      - update (lru_update)
+ *      - get (lru_get)
+ */
+typedef struct {
+    size_t len;
+    size_t cap;
+    size_t data_size;
+    node* head;
+    node* tail;
+    ht lookup;
+    ht reverse_lookup;
+} lru;
+
+/**
+ * @brief create a new lru
+ * @param cap the capacity of the lru
+ * @param data_size size of data stored in lru
+ * @param cmp_keys optional key comparison function
+ * @returns newly created lru
+ */
+lru lru_new(size_t cap, size_t data_size, CmpFn* cmp_keys);
+/**
+ * @brief update a key in the lru
+ * @param l the lru to update in
+ * @param key the key to update
+ * @param key_len the size of the key
+ * @param value the value to update with
+ * @param fn optional callback function to free the old value
+ * @returns 0 on success, -1 on failure
+ */
+int lru_update(lru* l, void* key, size_t key_len, void* value, FreeFn* fn);
+/**
+ * @brief get a value from the lru
+ * @param l the lru to get from
+ * @param key the key to get
+ * @param key_len the size of the key
+ * @returns value on success, NULL on failure
+ */
+void* lru_get(lru* l, void* key, size_t key_len);
+/**
+ * @brief free the lru
+ * @param l the lru to free
+ * @param free_key optional callback function to free the key
+ * @param free_val optional callback function to free the value
+ */
+void lru_free(lru* l, FreeFn* free_key, FreeFn* free_val);
 
 #endif /*__VLIB_H__*/

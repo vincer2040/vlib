@@ -137,3 +137,13 @@ target_include_directories(tree_test PUBLIC "${PROJECT_BINARY_DIR}")
 
 add_test(NAME tree_test COMMAND tree_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
 set_tests_properties(tree_test PROPERTIES TIMEOUT 30)
+
+# lru
+add_executable(lru_test lru_test.c)
+
+target_link_libraries(lru_test PUBLIC vlib check pthread)
+
+target_include_directories(lru_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME lru_test COMMAND lru_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(lru_test PROPERTIES TIMEOUT 30)
