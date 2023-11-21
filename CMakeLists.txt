@@ -17,6 +17,7 @@ add_library(
     vlib
     src/binary_search.c
     src/bubble_sort.c
+    src/insertion_sort.c
     src/quick_sort.c
     src/vec.c
     src/queue.c
