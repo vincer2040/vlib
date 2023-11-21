@@ -160,8 +160,9 @@ void ht_free(ht* ht, FreeFn* free_key, FreeFn* free_val) {
     size_t i, len = ht->cap;
     for (i = 0; i < len; ++i) {
         ht_bucket bucket = ht->buckets[i];
-        ht_bucket_free(&bucket, free_val, free_key);
+        ht_bucket_free(&bucket, free_key, free_val);
     }
+    free(ht->buckets);
 }
 
 static uint64_t ht_hash(ht* ht, void* key, size_t key_len) {
@@ -302,7 +303,7 @@ static ht_entry* ht_entry_new(void* key, size_t key_len, void* data,
 static void ht_entry_free(ht_entry* entry, FreeFn* free_key, FreeFn* free_val) {
     if (free_val) {
         size_t key_len = entry->key_len;
-        size_t offset = ht_padding(key_len);
+        size_t offset = key_len + ht_padding(key_len);
         free_val(entry->data + offset);
     }
     if (free_key) {
