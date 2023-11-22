@@ -12,11 +12,14 @@ void merge_sort(void* arr, size_t len, size_t data_size, CmpFn* fn) {
 
 static void ms(void* arr, size_t l, size_t r, size_t data_size, CmpFn* fn) {
     size_t m;
+    unsigned char* uca = arr;
     if (l < r) {
         m = l + (r - l) / 2;
         ms(arr, l, m, data_size, fn);
         ms(arr, m + 1, r, data_size, fn);
-        merge(arr, l, m, r, data_size, fn);
+        if (fn(uca + (m * data_size), uca + ((m + 1) * data_size)) > 0) {
+            merge(arr, l, m, r, data_size, fn);
+        }
     }
 }
 
