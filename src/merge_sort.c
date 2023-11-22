@@ -2,37 +2,40 @@
 #include <assert.h>
 #include <memory.h>
 
-static void ms(void* arr, size_t l, size_t r, size_t data_size, CmpFn* fn);
+static void ms(void* arr, size_t l, size_t r, size_t data_size,
+               unsigned char* tmp, CmpFn* fn);
 static void merge(void* arr, size_t l, size_t m, size_t r, size_t data_size,
-                  CmpFn* fn);
+                  unsigned char* tmp, CmpFn* fn);
 
 void merge_sort(void* arr, size_t len, size_t data_size, CmpFn* fn) {
-    ms(arr, 0, len - 1, data_size, fn);
+    unsigned char* tmp_arr = calloc(data_size, len);
+    assert(tmp_arr != NULL);
+    ms(arr, 0, len - 1, data_size, tmp_arr, fn);
+    free(tmp_arr);
 }
 
-static void ms(void* arr, size_t l, size_t r, size_t data_size, CmpFn* fn) {
+static void ms(void* arr, size_t l, size_t r, size_t data_size,
+               unsigned char* tmp, CmpFn* fn) {
     size_t m;
     unsigned char* uca = arr;
     if (l < r) {
         m = l + (r - l) / 2;
-        ms(arr, l, m, data_size, fn);
-        ms(arr, m + 1, r, data_size, fn);
+        ms(arr, l, m, data_size, tmp, fn);
+        ms(arr, m + 1, r, data_size, tmp, fn);
         if (fn(uca + (m * data_size), uca + ((m + 1) * data_size)) > 0) {
-            merge(arr, l, m, r, data_size, fn);
+            merge(arr, l, m, r, data_size, tmp, fn);
         }
     }
 }
 
 static void merge(void* arr, size_t l, size_t m, size_t r, size_t data_size,
-                  CmpFn* fn) {
+                  unsigned char* tmp, CmpFn* fn) {
     size_t i, j, k;
     size_t n1 = m - l + 1;
     size_t n2 = r - m;
     unsigned char* uca = arr;
-    unsigned char* larr = calloc(data_size, n1 + n2);
-    unsigned char* rarr;
-    assert(larr != NULL);
-    rarr = larr + (n1 * data_size);
+    unsigned char* larr = tmp;
+    unsigned char* rarr = larr + (n1 * data_size);
 
     memcpy(larr, uca + (l * data_size), n1 * data_size);
     memcpy(rarr, uca + ((m + 1) * data_size), n2 * data_size);
@@ -59,6 +62,4 @@ static void merge(void* arr, size_t l, size_t m, size_t r, size_t data_size,
         memcpy(uca + (k * data_size), rarr + (j * data_size),
                (n2 - j) * data_size);
     }
-
-    free(larr);
 }
