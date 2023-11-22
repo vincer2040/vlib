@@ -36,8 +36,6 @@ data structures
 
 - gcc
 
-- for testing (optional) [libcheck](https://github.com/libcheck/check)
-
 ### Installing
 
 1. Ensure you have the items listed in [Requirements](#requirements)
@@ -54,7 +52,7 @@ cd vlib
 ```
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
-make vlib
+make
 ```
 
 4. Optionally run tests
@@ -62,7 +60,6 @@ make vlib
 from within the build directory:
 
 ```
-make
 make test
 ```
 
