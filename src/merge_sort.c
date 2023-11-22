@@ -29,10 +29,10 @@ static void merge(void* arr, size_t l, size_t m, size_t r, size_t data_size,
     size_t n1 = m - l + 1;
     size_t n2 = r - m;
     unsigned char* uca = arr;
-    unsigned char* larr = calloc(data_size, n1);
-    unsigned char* rarr = calloc(data_size, n2);
+    unsigned char* larr = calloc(data_size, n1 + n2);
+    unsigned char* rarr;
     assert(larr != NULL);
-    assert(rarr != NULL);
+    rarr = larr + (n1 * data_size);
 
     memcpy(larr, uca + (l * data_size), n1 * data_size);
     memcpy(rarr, uca + ((m + 1) * data_size), n2 * data_size);
@@ -61,5 +61,4 @@ static void merge(void* arr, size_t l, size_t m, size_t r, size_t data_size,
     }
 
     free(larr);
-    free(rarr);
 }
