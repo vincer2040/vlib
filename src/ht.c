@@ -42,6 +42,31 @@ ht ht_new(size_t data_size, CmpFn* cmp_key) {
 
 size_t ht_len(ht* ht) { return ht->len; }
 
+bool ht_has(ht* ht, void* key, size_t key_len) {
+    uint64_t hash = ht_hash(ht, key, key_len);
+    ht_bucket bucket = ht->buckets[hash];
+    size_t i, len = bucket.len, cap = bucket.cap;
+    if (cap == 0) {
+        return false;
+    }
+    for (i = 0; i < len; ++i) {
+        ht_entry* cur = bucket.entries[i];
+        if (ht->cmp_key) {
+            int cmp = ht->cmp_key(key, cur->data);
+            if (cmp == 0) {
+                return true;
+            }
+        } else {
+            size_t cur_key_len = cur->key_len;
+            if ((cur_key_len == key_len) &&
+                (memcmp(key, cur->data, key_len) == 0)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 int ht_insert(ht* ht, void* key, size_t key_len, void* value, FreeFn* fn) {
     uint64_t hash;
     ht_bucket* bucket;
