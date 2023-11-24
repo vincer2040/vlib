@@ -91,6 +91,12 @@ create a vstr from a C string. Must be null terminated as strlen is called:
 vstr vstr_from(const char* cstr);
 ```
 
+create a new vstr from a traditional C string of length len
+
+```c
+vstr vstr_from_len(const char* cstr, size_t len);
+```
+
 get the length of the vstr:
 
 ```c
