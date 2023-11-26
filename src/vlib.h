@@ -841,6 +841,14 @@ ht ht_new(size_t data_size, CmpFn* cmp_key);
  */
 size_t ht_len(ht* ht);
 /**
+ * @brief check if key is in the table
+ * @param ht the ht to search in
+ * @param key the key to search for
+ * @param key_len the size of the key
+ * @returns true on found, false on not found
+ */
+bool ht_has(ht* ht, void* key, size_t key_len);
+/**
  * @brief insert a value into the table
  * @param ht the table to insert into
  * @param key the key associated with the value
