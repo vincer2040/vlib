@@ -26,9 +26,7 @@ data structures
 - Insertion sort
 - Merge sort
 - Quick sort
-- Binary tree traversals
-- Binary tree breadth first search
-- Binary tree comparison
+- Tree traversals
 
 ## Getting started
 
