@@ -180,3 +180,13 @@ target_include_directories(lru_test PUBLIC "${PROJECT_BINARY_DIR}")
 
 add_test(NAME lru_test COMMAND lru_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
 set_tests_properties(lru_test PROPERTIES TIMEOUT 30)
+
+# set
+add_executable(set_test set_test.c)
+
+target_link_libraries(set_test PUBLIC vlib check pthread)
+
+target_include_directories(set_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME set_test COMMAND set_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(set_test PROPERTIES TIMEOUT 30)

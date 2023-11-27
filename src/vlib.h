@@ -13,6 +13,7 @@
  *              - Hashtable (ht.c)
  *              - avl tree (avl_tree.c)
  *              - generic tree (tree.c)
+ *              - set (set.c)
  *
  *              Algorithms:
  *              - binary search (binary_search.c)
@@ -837,8 +838,7 @@ typedef struct ht_entry {
     size_t key_len;
     unsigned char data[];
 } ht_entry;
-ht_entry* ht_entry_new(void* key, size_t key_len, void* data,
-                              size_t data_size);
+ht_entry* ht_entry_new(void* key, size_t key_len, void* data, size_t data_size);
 void ht_entry_free(ht_entry* entry, FreeFn* free_key, FreeFn* free_val);
 
 typedef struct {
@@ -850,7 +850,6 @@ typedef struct {
 #define HT_SEED_SIZE 16
 #define HT_INITIAL_CAP 32
 #define HT_BUCKET_INITIAL_CAP 2
-
 
 /**
  * @brief hashtable implementation
@@ -869,7 +868,8 @@ typedef struct {
     size_t len;       /* the number of entries in the table */
     size_t cap;       /* the number of slots available in the table */
     size_t data_size; /* the size of the data in the table */
-    CmpFn* cmp_key;
+    CmpFn* cmp_key;   /* optional function to compare keys. If null, memcmp is
+                         used */
     unsigned char seed[HT_SEED_SIZE]; /* seed used to hash the keys*/
     ht_bucket* buckets;               /* slots of the table */
 } ht;
@@ -947,14 +947,68 @@ int ht_delete(ht* ht, void* key, size_t key_len, FreeFn* free_key,
  */
 void ht_free(ht* ht, FreeFn* free_key, FreeFn* free_val);
 
+/**
+ * @brief set data structure
+ *
+ * Available operations:
+ *      - len (set_len)
+ *      - has (set_has)
+ *      - insert (set_insert)
+ *      - delete (set_delete)
+ */
 typedef struct {
-    size_t len;
-    size_t cap;
-    size_t data_size;
-    CmpFn* cmp_key;
-    unsigned char seed[HT_SEED_SIZE];
-    ht_bucket* buckets;
+    size_t len;       /* the number of elements in the set */
+    size_t cap;       /* the number of buckets in the set */
+    size_t data_size; /* the size of the keys in the set */
+    CmpFn* cmp_key;   /* optional function to compare keys. If null, memcmp is
+                         used */
+    unsigned char seed[HT_SEED_SIZE]; /* seed used to hash the keys */
+    ht_bucket* buckets;               /* slots of the table */
 } set;
+
+/**
+ * @brief create a new set
+ * @param data_size the size of the data stored in the set
+ * @param cmp_key optional key comparison function
+ * @returns newly created set
+ */
+set set_new(size_t data_size, CmpFn* cmp_key);
+/**
+ * @brief get the number of elements in the set
+ * @param set the set to get the number of elements in
+ * @returns number of elements in the set
+ */
+size_t set_len(set* set);
+/**
+ * @brief check if a key is in the set
+ * @param set the set to search in
+ * @param key the key to search for
+ * @returns true on found, false on not found
+ */
+bool set_has(set* set, void* key);
+/**
+ * @brief insert a key in the set
+ * @param set the set to insert into
+ * @param key the key to insert
+ * @returns 0 on success, -1 on failure
+ */
+int set_insert(set* set, void* key);
+/**
+ * @brief delete a key from the set
+ * @param set the set to delete from
+ * @param key the key to delete
+ * @param free_fn optional callback function to free the key in the set. if
+ * null, it is ignored
+ * @returns 0 on success, -1 on failure
+ */
+int set_delete(set* set, void* key, FreeFn* free_fn);
+/**
+ * @brief free the whole set
+ * @param set the set to free
+ * @param free_fn optional callback function to free the key in the set. if
+ * null, it is ignored
+ */
+void set_free(set* set, FreeFn* free_fn);
 
 /**
  * @brief an lru data structure
