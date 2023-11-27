@@ -221,7 +221,7 @@ size_t vstr_len(vstr* s);
  * @param s pointer to the vstr
  * @returns the buffer contained in the vstr
  */
-char* vstr_data(vstr* s);
+const char* vstr_data(vstr* s);
 /**
  * @brief compare two vstr's
  * @param a vstr to compare

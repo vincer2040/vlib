@@ -35,7 +35,7 @@ END_TEST
 
 START_TEST(test_vstr_from_sm) {
     vstr s = vstr_from("aaaaaaaaaaaaaaaaaaaaaaa");
-    char* data;
+    const char* data;
     ck_assert_uint_eq(s.is_large, 0);
     ck_assert_uint_eq(vstr_len(&s), 23);
     data = vstr_data(&s);
@@ -53,7 +53,7 @@ END_TEST
 
 START_TEST(test_vstr_from_lg) {
     vstr s = vstr_from("aaaaaaaaaaaaaaaaaaaaaaabb");
-    char* data;
+    const char* data;
     ck_assert_uint_eq(s.is_large, 0);
     ck_assert_uint_eq(vstr_len(&s), 25);
     data = vstr_data(&s);
