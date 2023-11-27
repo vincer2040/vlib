@@ -163,6 +163,81 @@ int ht_insert(ht* ht, void* key, size_t key_len, void* value, FreeFn* fn) {
     return 0;
 }
 
+int ht_try_insert(ht* ht, void* key, size_t key_len, void* value) {
+    uint64_t hash;
+    ht_bucket* bucket;
+    ht_entry* entry;
+    size_t i, len, cap, data_size = ht->data_size;
+    if (ht->len >= ht->cap) {
+        if (ht_resize(ht) == -1) {
+            return -1;
+        }
+    }
+    hash = ht_hash(ht, key, key_len);
+    bucket = &(ht->buckets[hash]);
+    len = bucket->len;
+    cap = bucket->cap;
+    if (cap == 0) {
+        int init_res = ht_init_bucket(bucket);
+        if (init_res == -1) {
+            return -1;
+        }
+        entry = ht_entry_new(key, key_len, value, data_size);
+        if (entry == NULL) {
+            return -1;
+        }
+        bucket->entries[0] = entry;
+        bucket->len++;
+        ht->len++;
+        return 0;
+    }
+
+    if (len == 0) {
+        entry = ht_entry_new(key, key_len, value, data_size);
+        if (entry == NULL) {
+            return -1;
+        }
+        bucket->entries[0] = entry;
+        bucket->len++;
+        ht->len++;
+        return 0;
+    }
+
+    for (i = 0; i < len; ++i) {
+        ht_entry* cur = bucket->entries[i];
+        if (ht->cmp_key) {
+            int cmp = ht->cmp_key(cur->data, key);
+            if (cmp == 0) {
+                return -1;
+            }
+        } else {
+            size_t cur_key_len = cur->key_len;
+            if ((key_len == cur_key_len) &&
+                (memcmp(key, cur->data, key_len) == 0)) {
+                return -1;
+            }
+        }
+    }
+
+    if (len == cap) {
+        int realloc_bucket_res = ht_realloc_bucket(bucket);
+        if (realloc_bucket_res == -1) {
+            return -1;
+        }
+    }
+
+    entry = ht_entry_new(key, key_len, value, data_size);
+    if (entry == NULL) {
+        return -1;
+    }
+
+    bucket->entries[len] = entry;
+    bucket->len++;
+    ht->len++;
+
+    return 0;
+}
+
 void* ht_get(ht* ht, void* key, size_t key_len) {
     uint64_t hash = ht_hash(ht, key, key_len);
     ht_bucket bucket = ht->buckets[hash];

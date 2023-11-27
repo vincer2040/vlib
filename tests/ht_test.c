@@ -15,6 +15,8 @@ START_TEST(test_ht) {
     ht_insert(&ht, "a3", 2, &a3, NULL);
     ht_insert(&ht, "a4", 2, &a4, NULL);
 
+    ck_assert_int_eq(ht_try_insert(&ht, "a0", 2, &a0), -1);
+
     ck_assert_uint_eq(ht_len(&ht), 5);
 
     get = ht_get(&ht, "a0", 2);
@@ -57,6 +59,12 @@ START_TEST(test_ht) {
 
     get = ht_get(&ht, "a5", 2);
     ck_assert_ptr_null(get);
+
+    ck_assert_int_eq(ht_try_insert(&ht, "a0", 2, &a0), 0);
+
+    get = ht_get(&ht, "a0", 2);
+    ck_assert_ptr_nonnull(get);
+    ck_assert_int_eq(*get, 5);
 
     ht_free(&ht, NULL, NULL);
 }
