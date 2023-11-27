@@ -190,3 +190,13 @@ target_include_directories(set_test PUBLIC "${PROJECT_BINARY_DIR}")
 
 add_test(NAME set_test COMMAND set_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
 set_tests_properties(set_test PROPERTIES TIMEOUT 30)
+
+# small vec
+add_executable(small_vec_test small_vec_test.c)
+
+target_link_libraries(small_vec_test PUBLIC vlib check pthread)
+
+target_include_directories(small_vec_test PUBLIC "${PROJECT_BINARY_DIR}")
+
+add_test(NAME small_vec_test COMMAND small_vec_test WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
+set_tests_properties(small_vec_test PROPERTIES TIMEOUT 30)
