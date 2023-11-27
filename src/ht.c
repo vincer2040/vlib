@@ -11,6 +11,16 @@
 #define HT_INITIAL_CAP 32
 #define HT_BUCKET_INITIAL_CAP 2
 
+/**
+ * @brief an entry in the hashtable
+ *
+ * the key is padded to ensure that data is on an 8 byte aligned address
+ *
+ * Memory layout:
+ *  --------------------------------
+ * | key_len | key + padding | data |
+ *  --------------------------------
+ */
 typedef struct ht_entry {
     size_t key_len;
     unsigned char data[];
