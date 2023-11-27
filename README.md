@@ -17,7 +17,7 @@ data structures
 - [Generic Tree](#generic-tree)
 - [LRU](#lru)
 - [Set](#set)
-- [Small Vec](#small-vec)
+- [Small Vector](#small-vector)
 
 ## Algorithms included
 
@@ -563,7 +563,7 @@ free the whole set
 void set_free(set* set, FreeFn* free_fn);
 ```
 
-### Small Vec
+### Small Vector
 
 a small vector implementation. all memory for the vector is allocated
 on the stack
