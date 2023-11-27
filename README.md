@@ -570,7 +570,7 @@ on the stack
 
 #### Available Operations
 
-initialize the vector's type and function
+initialize the vector's type and functions
 
 ```c
 SMALL_VEC_INIT(type, name, capacity);
