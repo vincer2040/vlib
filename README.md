@@ -16,6 +16,7 @@ data structures
 - [AVL Tree](#avl-tree)
 - [Generic Tree](#generic-tree)
 - [LRU](#lru)
+- [Set] (#set)
 
 ## Algorithms included
 
@@ -517,5 +518,47 @@ free the lru
 
 ```c
 void lru_free(lru* l, FreeFn* free_key, FreeFn* free_val);
+```
+
+### Set
+
+a generic hash set implementation
+
+#### Available Operations
+
+create a new set
+
+```c
+set set_new(size_t data_size, CmpFn* cmp_key);
+```
+
+get the number of elements in the set
+
+```c
+size_t set_len(set* set);
+```
+
+check if a key is in the set
+
+```c
+bool set_has(set* set, void* key);
+```
+
+insert a key in the set
+
+```c
+int set_insert(set* set, void* key);
+```
+
+delete a key from the set
+
+```c
+int set_delete(set* set, void* key, FreeFn* free_fn);
+```
+
+free the whole set
+
+```c
+void set_free(set* set, FreeFn* free_fn);
 ```
 
