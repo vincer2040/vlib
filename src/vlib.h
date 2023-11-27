@@ -689,9 +689,10 @@ struct tree_node;
  * @brief a generic tree structure
  *
  * Available operations
- *      - insert (tree_insert)
- *      - has (tree_has)
- *      - delete (tree_delete)
+ *      - depth first find (tree_depth_first_find)
+ *      - breadth first find (tree_breadth_first_find)
+ *      - depth first insert (tree_depth_first_insert)
+ *      - depth first delete (tree_depth_first_delete)
  */
 typedef struct {
     size_t num_el;          /* number of elements in the tree */
@@ -722,16 +723,16 @@ bool tree_depth_first_find(tree* tree, void* key, CmpFn* fn);
  */
 bool tree_breadth_first_find(tree* tree, void* key, CmpFn* fn);
 /**
- * @brief insert a key into the tree
+ * @brief insert a key into the tree using depth first search
  * @param tree the tree to insert into
  * @param key the key to insert
  * @param par_key the parent key to insert the child into
  * @param fn comparison function to determine if keys are equal
  * @returns 0 on success, -1 on failure
  */
-int tree_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
+int tree_depth_first_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
 /**
- * @brief delete a key from the tree
+ * @brief delete a key from the tree using depth first search
  * @param tree the tree to delete from
  * @param key the key to delete
  * @param cmp_fn comparison function to determine if keys are equal
@@ -739,7 +740,8 @@ int tree_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
  * If null, it is ignored
  * @returns 0 on success, -1 on failure
  */
-int tree_delete(tree* tree, void* key, CmpFn* cmp_fn, FreeFn* free_fn);
+int tree_depth_first_delete(tree* tree, void* key, CmpFn* cmp_fn,
+                            FreeFn* free_fn);
 /**
  * @brief free the whole tree
  * @param tree the tree to free

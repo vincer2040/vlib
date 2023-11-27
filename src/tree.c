@@ -33,8 +33,9 @@ typedef struct tree_node {
     unsigned char data[];
 } tree_node;
 
-static tree_node** find_node(tree_node** root, void* key, size_t key_size,
-                             size_t* idx, CmpFn* fn);
+static tree_node** depth_first_find_node(tree_node** root, void* key,
+                                         size_t key_size, size_t* idx,
+                                         CmpFn* fn);
 static void tree_node_delete(tree_node** parent, tree_node** node,
                              size_t key_size, size_t idx, FreeFn* fn);
 static int tree_node_insert(tree_node** parent, tree_node** node,
@@ -51,7 +52,7 @@ tree tree_new(size_t key_size) {
     return t;
 }
 
-int tree_insert(tree* tree, void* key, void* par_key, CmpFn* fn) {
+int tree_depth_first_insert(tree* tree, void* key, void* par_key, CmpFn* fn) {
     tree_node* node;
     tree_node** parent;
     int insert_res;
@@ -69,7 +70,7 @@ int tree_insert(tree* tree, void* key, void* par_key, CmpFn* fn) {
         tree->root = node;
         return 0;
     }
-    parent = find_node(&(tree->root), par_key, key_size, &idx, fn);
+    parent = depth_first_find_node(&(tree->root), par_key, key_size, &idx, fn);
     if (!parent) {
         return -1;
     }
@@ -90,7 +91,7 @@ bool tree_depth_first_find(tree* tree, void* key, CmpFn* fn) {
     if (tree->root == NULL) {
         return false;
     }
-    node = find_node(&(tree->root), key, tree->key_size, &idx, fn);
+    node = depth_first_find_node(&(tree->root), key, tree->key_size, &idx, fn);
     if (!node) {
         return false;
     }
@@ -127,13 +128,14 @@ bool tree_breadth_first_find(tree* tree, void* key, CmpFn* fn) {
     return false;
 }
 
-int tree_delete(tree* tree, void* key, CmpFn* cmp_fn, FreeFn* free_fn) {
+int tree_depth_first_delete(tree* tree, void* key, CmpFn* cmp_fn,
+                            FreeFn* free_fn) {
     tree_node** node;
     size_t idx, key_size = tree->key_size;
     if (tree->root == NULL) {
         return -1;
     }
-    node = find_node(&(tree->root), key, key_size, &idx, cmp_fn);
+    node = depth_first_find_node(&(tree->root), key, key_size, &idx, cmp_fn);
     if (!node) {
         return -1;
     }
@@ -150,8 +152,9 @@ void tree_free(tree* t, FreeFn* fn) {
     tree_node_free(t->root, t->key_size, fn);
 }
 
-static tree_node** find_node(tree_node** root, void* key, size_t key_size,
-                             size_t* idx, CmpFn* fn) {
+static tree_node** depth_first_find_node(tree_node** root, void* key,
+                                         size_t key_size, size_t* idx,
+                                         CmpFn* fn) {
     int cmp;
     size_t i, len, offset;
     cmp = fn((*root)->data, key);
@@ -164,7 +167,7 @@ static tree_node** find_node(tree_node** root, void* key, size_t key_size,
         tree_node** cur =
             (tree_node**)((*root)->data + offset + (sizeof(tree_node*) * i));
         *idx = i;
-        tree_node** t = find_node(cur, key, key_size, idx, fn);
+        tree_node** t = depth_first_find_node(cur, key, key_size, idx, fn);
         if (t) {
             return t;
         }
