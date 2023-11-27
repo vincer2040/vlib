@@ -152,3 +152,23 @@ void vec_quick_sort(vec* vec, CmpFn* fn) {
     size_t len = vec->len, data_size = vec->data_size;
     quick_sort(vec->data, len, data_size, fn);
 }
+
+vec_iter vec_iter_new(vec* vec) {
+    vec_iter iter = {0};
+    iter.next_idx = 0;
+    iter.end_idx = vec->len - 1;
+    iter.vec = vec;
+    vec_iter_next(&iter);
+    vec_iter_next(&iter);
+    return iter;
+}
+
+void vec_iter_next(vec_iter* iter) {
+    iter->cur = iter->next;
+    if (iter->next_idx > iter->end_idx) {
+        iter->next = NULL;
+    } else {
+        iter->next = iter->vec->data + (iter->vec->data_size * iter->next_idx);
+    }
+    iter->next_idx++;
+}

@@ -365,6 +365,32 @@ void vec_merge_sort(vec* vec, CmpFn* fn);
 void vec_quick_sort(vec* vec, CmpFn* fn);
 
 /**
+ * @brief iterator over a vector
+ *
+ * use iter.cur to get the current element of iteration. If it is null,
+ * iteration is complete
+ */
+typedef struct {
+    void* cur;  /* the current element of iteration. NULL if iterator is done */
+    void* next; /* the next element of iteration */
+    size_t next_idx; /* the index of the next element of iteration */
+    size_t end_idx;  /* the last index of iteration */
+    vec* vec;        /* the vector being iterated over */
+} vec_iter;
+
+/**
+ * @bried create a new iterator
+ * @param vec the vector to iterate over
+ * @returns vec_iter
+ */
+vec_iter vec_iter_new(vec* vec);
+/**
+ * @brief get the next element of iteration
+ * @param iter the iterator to iterate
+ */
+void vec_iter_next(vec_iter* iter);
+
+/**
  * node of the queue
  */
 struct qnode;
