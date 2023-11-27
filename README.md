@@ -17,6 +17,7 @@ data structures
 - [Generic Tree](#generic-tree)
 - [LRU](#lru)
 - [Set](#set)
+- [Small Vec](#small-vec)
 
 ## Algorithms included
 
@@ -560,5 +561,54 @@ free the whole set
 
 ```c
 void set_free(set* set, FreeFn* free_fn);
+```
+
+### Small Vec
+
+a small vector implementation. all memory for the vector is allocated
+on the stack
+
+#### Available Operations
+
+initialize the vector's type and function
+
+```c
+SMALL_VEC_INIT(type, name, capacity);
+```
+
+initialize a vector
+
+```c
+small_vec_t(name) vec = small_vec_init(name);
+```
+
+get the number of elements in the vector
+
+```c
+size_t len = small_vec_len(name, &vec);
+```
+
+append an element to the vector
+
+```c
+int res = small_vec_push(name, &vec, 5);
+```
+
+remove the last element in the vector
+
+```c
+int res = small_vec_pop(name, &vec, &out);
+```
+
+get element at specific index in the vector
+
+```c
+int* res = small_vec_get_at(name, &vec, 0);
+```
+
+remove an element at a specific index in the vector
+
+```c
+int res = small_vec_remove_at(name, &vec, 0);
 ```
 
