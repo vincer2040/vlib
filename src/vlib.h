@@ -28,6 +28,7 @@
 #ifndef __VLIB_H__
 #define __VLIB_H__
 
+#include "small_vec.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
