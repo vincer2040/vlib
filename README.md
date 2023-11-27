@@ -71,6 +71,11 @@ the default path is /usr/local/lib
 make install
 ```
 
+### usage 
+
+`#include "vlib.h"` into your project and compile vlib along with 
+your binary. The library should be statically linked.
+
 ### String
 
 A string implementation that is optimzed for small strings. Max string length
