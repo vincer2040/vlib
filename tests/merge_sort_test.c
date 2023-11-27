@@ -11,7 +11,7 @@ int cmp(void* a, void* b) {
     return ai - bi;
 }
 
-START_TEST(test_bubble_sort) {
+START_TEST(test_merge_sort) {
     vec* vec = vec_new(sizeof(int));
     int a0 = 9, a1 = 3, a2 = 7, a3 = 4, a4 = 69, a5 = 420, a6 = 42;
     int exps[] = {3, 4, 7, 9, 42, 69, 420};
@@ -41,7 +41,7 @@ Suite* ht_suite() {
     TCase* tc_core;
     s = suite_create("merge sort");
     tc_core = tcase_create("Core");
-    tcase_add_test(tc_core, test_bubble_sort);
+    tcase_add_test(tc_core, test_merge_sort);
     suite_add_tcase(s, tc_core);
     return s;
 }
