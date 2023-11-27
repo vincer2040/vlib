@@ -464,16 +464,17 @@ determine if a key is in the tree using breadth first search
 bool tree_breadth_first_find(tree* tree, void* key, CmpFn* fn);
 ```
 
-insert a key into the tree
+insert a key into the tree using depth first search
 
 ```c
-int tree_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
+int tree_depth_first_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
 ```
 
-delete a key from the tree
+delete a key from the tree using depth first search
 
 ```c
-int tree_delete(tree* tree, void* key, CmpFn* cmp_fn, FreeFn* free_fn);
+int tree_depth_first_delete(tree* tree, void* key, CmpFn* cmp_fn,
+                            FreeFn* free_fn);
 ```
 
 free the whole tree
