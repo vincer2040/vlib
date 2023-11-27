@@ -16,7 +16,7 @@ data structures
 - [AVL Tree](#avl-tree)
 - [Generic Tree](#generic-tree)
 - [LRU](#lru)
-- [Set] (#set)
+- [Set](#set)
 
 ## Algorithms included
 
