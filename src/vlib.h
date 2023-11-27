@@ -816,7 +816,10 @@ typedef struct {
  * siphash 1-2 is used to hash the keys
  *
  * Available operations:
+ *      - len (ht_len)
+ *      - has (ht_has)
  *      - insert (ht_insert)
+ *      - try insert (ht_try_insert)
  *      - get (ht_get)
  *      - delete (ht_delete)
  */
@@ -861,6 +864,16 @@ bool ht_has(ht* ht, void* key, size_t key_len);
  * @returns 0 on success, -1 on failure
  */
 int ht_insert(ht* ht, void* key, size_t key_len, void* value, FreeFn* fn);
+/**
+ * @brief try to insert a value into the table. If key is already in table,
+ * don't insert
+ * @param ht the table to insert into
+ * @param key the key to insert
+ * @param key_len the size of the key
+ * @param value the value to insert
+ * @returns 0 on success, -1 on failure
+ */
+int ht_try_insert(ht* ht, void* key, size_t key_len, void* value);
 /**
  * @brief retrieve an entry from the table
  * @param ht the table to retrieve from
