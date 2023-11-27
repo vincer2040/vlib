@@ -371,6 +371,12 @@ insert a value into the table
 int ht_insert(ht* ht, void* key, size_t key_len, void* value, FreeFn* fn);
 ```
 
+try to insert a value into the table. if key is already in table, don't insert
+
+```c
+int ht_try_insert(ht* ht, void* key, size_t key_len, void* value);
+```
+
 retrieve an entry from the table
 
 ```c
