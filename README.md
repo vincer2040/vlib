@@ -111,7 +111,7 @@ size_t vstr_len(vstr* s);
 get the data buffer of a vstr:
 
 ```c
-char* vstr_data(vstr* s);
+const char* vstr_data(vstr* s);
 ```
 
 compare two vstrs:
