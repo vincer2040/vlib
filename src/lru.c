@@ -115,7 +115,7 @@ static void lru_prepend(lru* l, node* node) {
 static void lru_trim_cache(lru* l, FreeFn* fn) {
     node* tail;
     vstr* key_vstr;
-    void* key;
+    const char* key;
     size_t key_len;
     if (l->len <= l->cap) {
         return;
@@ -126,7 +126,7 @@ static void lru_trim_cache(lru* l, FreeFn* fn) {
     assert(key_vstr != NULL);
     key = vstr_data(key_vstr);
     key_len = vstr_len(key_vstr);
-    ht_delete(&(l->lookup), key, key_len, NULL, NULL);
+    ht_delete(&(l->lookup), (void*)key, key_len, NULL, NULL);
     ht_delete(&(l->reverse_lookup), &tail, sizeof(node*), NULL, NULL);
     node_free(tail, fn);
 }
