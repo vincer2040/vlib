@@ -99,7 +99,7 @@ int vec_remove_at(vec* vec, size_t idx, void* out) {
     }
     new_len_x_size = new_len * data_size;
     memmove(vec->data + idx_x_size, vec->data + ((idx + 1) * data_size),
-            new_len_x_size);
+            new_len_x_size - idx_x_size);
     memset(vec->data + new_len_x_size, 0, data_size);
     return 0;
 }
