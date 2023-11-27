@@ -12,30 +12,30 @@ int cmp(void* a, void* b) {
 }
 
 START_TEST(set_test) {
-    set s = set_new(sizeof(int), cmp);
+    set s = set_new(cmp);
     int a0 = 5, a1 = 7, a2 = 9, a3 = 11, a4 = 69;
-    set_insert(&s, &a0);
-    set_insert(&s, &a1);
-    set_insert(&s, &a2);
-    set_insert(&s, &a3);
-    set_insert(&s, &a4);
+    set_insert(&s, &a0, sizeof(int));
+    set_insert(&s, &a1, sizeof(int));
+    set_insert(&s, &a2, sizeof(int));
+    set_insert(&s, &a3, sizeof(int));
+    set_insert(&s, &a4, sizeof(int));
 
-    ck_assert_int_eq(set_insert(&s, &a0), -1);
+    ck_assert_int_eq(set_insert(&s, &a0, sizeof(int)), -1);
 
     ck_assert_uint_eq(set_len(&s), 5);
 
-    ck_assert_int_eq(set_has(&s, &a0), true);
-    ck_assert_int_eq(set_has(&s, &a1), true);
-    ck_assert_int_eq(set_has(&s, &a2), true);
-    ck_assert_int_eq(set_has(&s, &a3), true);
-    ck_assert_int_eq(set_has(&s, &a4), true);
+    ck_assert_int_eq(set_has(&s, &a0, sizeof(int)), true);
+    ck_assert_int_eq(set_has(&s, &a1, sizeof(int)), true);
+    ck_assert_int_eq(set_has(&s, &a2, sizeof(int)), true);
+    ck_assert_int_eq(set_has(&s, &a3, sizeof(int)), true);
+    ck_assert_int_eq(set_has(&s, &a4, sizeof(int)), true);
 
-    ck_assert_int_eq(set_delete(&s, &a0, NULL), 0);
-    ck_assert_int_eq(set_delete(&s, &a0, NULL), -1);
-    ck_assert_int_eq(set_delete(&s, &a1, NULL), 0);
+    ck_assert_int_eq(set_delete(&s, &a0, sizeof(int), NULL), 0);
+    ck_assert_int_eq(set_delete(&s, &a0, sizeof(int), NULL), -1);
+    ck_assert_int_eq(set_delete(&s, &a1, sizeof(int), NULL), 0);
 
-    ck_assert_int_eq(set_has(&s, &a0), false);
-    ck_assert_int_eq(set_has(&s, &a1), false);
+    ck_assert_int_eq(set_has(&s, &a0, sizeof(int)), false);
+    ck_assert_int_eq(set_has(&s, &a1, sizeof(int)), false);
 
     ck_assert_uint_eq(set_len(&s), 3);
     set_free(&s, NULL);

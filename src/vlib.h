@@ -959,7 +959,6 @@ void ht_free(ht* ht, FreeFn* free_key, FreeFn* free_val);
 typedef struct {
     size_t len;       /* the number of elements in the set */
     size_t cap;       /* the number of buckets in the set */
-    size_t data_size; /* the size of the keys in the set */
     CmpFn* cmp_key;   /* optional function to compare keys. If null, memcmp is
                          used */
     unsigned char seed[HT_SEED_SIZE]; /* seed used to hash the keys */
@@ -968,11 +967,10 @@ typedef struct {
 
 /**
  * @brief create a new set
- * @param data_size the size of the data stored in the set
  * @param cmp_key optional key comparison function
  * @returns newly created set
  */
-set set_new(size_t data_size, CmpFn* cmp_key);
+set set_new(CmpFn* cmp_key);
 /**
  * @brief get the number of elements in the set
  * @param set the set to get the number of elements in
@@ -983,25 +981,28 @@ size_t set_len(set* set);
  * @brief check if a key is in the set
  * @param set the set to search in
  * @param key the key to search for
+ * @param key_len the size of the key
  * @returns true on found, false on not found
  */
-bool set_has(set* set, void* key);
+bool set_has(set* set, void* key, size_t key_len);
 /**
  * @brief insert a key in the set
  * @param set the set to insert into
  * @param key the key to insert
+ * @param key_len the size of the key
  * @returns 0 on success, -1 on failure
  */
-int set_insert(set* set, void* key);
+int set_insert(set* set, void* key, size_t key_len);
 /**
  * @brief delete a key from the set
  * @param set the set to delete from
  * @param key the key to delete
+ * @param key_len the size of the key
  * @param free_fn optional callback function to free the key in the set. if
  * null, it is ignored
  * @returns 0 on success, -1 on failure
  */
-int set_delete(set* set, void* key, FreeFn* free_fn);
+int set_delete(set* set, void* key, size_t key_len, FreeFn* free_fn);
 /**
  * @brief free the whole set
  * @param set the set to free

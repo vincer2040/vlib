@@ -9,13 +9,12 @@ static int set_realloc_bucket(ht_bucket* bucket);
 static int set_init_bucket(ht_bucket* bucket);
 static void set_bucket_free(ht_bucket* bucket, FreeFn* free_val);
 
-set set_new(size_t data_size, CmpFn* cmp_key) {
+set set_new(CmpFn* cmp_key) {
     set set = {0};
     set.buckets = calloc(HT_INITIAL_CAP, sizeof(ht_bucket));
     assert(set.buckets != NULL);
     set.cap = HT_INITIAL_CAP;
     set.len = 0;
-    set.data_size = data_size;
     set.cmp_key = cmp_key;
     get_random_bytes(set.seed, HT_SEED_SIZE);
     return set;
@@ -23,8 +22,7 @@ set set_new(size_t data_size, CmpFn* cmp_key) {
 
 size_t set_len(set* set) { return set->len; }
 
-bool set_has(set* set, void* key) {
-    size_t key_len = set->data_size;
+bool set_has(set* set, void* key, size_t key_len) {
     uint64_t hash = set_hash(set, key, key_len);
     ht_bucket bucket = set->buckets[hash];
     size_t i, len = bucket.len, cap = bucket.cap;
@@ -49,17 +47,17 @@ bool set_has(set* set, void* key) {
     return false;
 }
 
-int set_insert(set* set, void* key) {
+int set_insert(set* set, void* key, size_t key_len) {
     uint64_t hash;
     ht_bucket* bucket;
     ht_entry* entry;
-    size_t i, len, cap, data_size = set->data_size;
+    size_t i, len, cap;
     if (set->len == set->cap) {
         if (set_resize(set) == -1) {
             return -1;
         }
     }
-    hash = set_hash(set, key, data_size);
+    hash = set_hash(set, key, key_len);
     bucket = &(set->buckets[hash]);
     len = bucket->len;
     cap = bucket->cap;
@@ -68,7 +66,7 @@ int set_insert(set* set, void* key) {
         if (init_res == -1) {
             return -1;
         }
-        entry = ht_entry_new(key, data_size, NULL, 0);
+        entry = ht_entry_new(key, key_len, NULL, 0);
         if (entry == NULL) {
             return -1;
         }
@@ -79,7 +77,7 @@ int set_insert(set* set, void* key) {
     }
 
     if (len == 0) {
-        entry = ht_entry_new(key, data_size, NULL, 0);
+        entry = ht_entry_new(key, key_len, NULL, 0);
         if (entry == NULL) {
             return -1;
         }
@@ -98,8 +96,8 @@ int set_insert(set* set, void* key) {
             }
         } else {
             size_t cur_key_len = cur->key_len;
-            if ((data_size == cur_key_len) &&
-                (memcmp(key, cur->data, data_size) == 0)) {
+            if ((key_len == cur_key_len) &&
+                (memcmp(key, cur->data, key_len) == 0)) {
                 return -1;
             }
         }
@@ -112,7 +110,7 @@ int set_insert(set* set, void* key) {
         }
     }
 
-    entry = ht_entry_new(key, data_size, NULL, 0);
+    entry = ht_entry_new(key, key_len, NULL, 0);
     if (entry == NULL) {
         return -1;
     }
@@ -123,8 +121,7 @@ int set_insert(set* set, void* key) {
     return 0;
 }
 
-int set_delete(set* set, void* key, FreeFn* free_fn) {
-    size_t key_len = set->data_size;
+int set_delete(set* set, void* key, size_t key_len, FreeFn* free_fn) {
     uint64_t hash = set_hash(set, key, key_len);
     ht_bucket* bucket = &(set->buckets[hash]);
     size_t i, len = bucket->len;
