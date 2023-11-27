@@ -191,6 +191,8 @@ static void tree_node_delete(tree_node** parent, tree_node** node,
         memmove((*parent)->data + offset + (idx * sizeof(tree_node*)),
                 (*parent)->data + offset + ((idx + 1) * sizeof(tree_node*)),
                 (len - idx) * sizeof(tree_node*));
+        memset((*parent)->data + offset + (len * sizeof(tree_node*)), 0,
+               sizeof(tree_node*));
         (*parent)->len--;
         tree_node_free(n, key_size, fn);
     } else {
