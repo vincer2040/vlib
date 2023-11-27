@@ -529,7 +529,7 @@ a generic hash set implementation
 create a new set
 
 ```c
-set set_new(size_t data_size, CmpFn* cmp_key);
+set set_new(CmpFn* cmp_key);
 ```
 
 get the number of elements in the set
@@ -541,19 +541,19 @@ size_t set_len(set* set);
 check if a key is in the set
 
 ```c
-bool set_has(set* set, void* key);
+bool set_has(set* set, void* key, size_t key_len);
 ```
 
 insert a key in the set
 
 ```c
-int set_insert(set* set, void* key);
+int set_insert(set* set, void* key, size_t key_len);
 ```
 
 delete a key from the set
 
 ```c
-int set_delete(set* set, void* key, FreeFn* free_fn);
+int set_delete(set* set, void* key, size_t key_len, FreeFn* free_fn);
 ```
 
 free the whole set
