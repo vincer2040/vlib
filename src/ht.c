@@ -8,24 +8,6 @@
 #define ht_padding(size)                                                       \
     ((sizeof(void*) - ((size + 8) % sizeof(void*))) & (sizeof(void*) - 1))
 
-#define HT_INITIAL_CAP 32
-#define HT_BUCKET_INITIAL_CAP 2
-
-/**
- * @brief an entry in the hashtable
- *
- * the key is padded to ensure that data is on an 8 byte aligned address
- *
- * Memory layout:
- *  --------------------------------
- * | key_len | key + padding | data |
- *  --------------------------------
- */
-typedef struct ht_entry {
-    size_t key_len;
-    unsigned char data[];
-} ht_entry;
-
 static uint64_t ht_hash(ht* ht, void* key, size_t key_len);
 static int ht_resize(ht* ht);
 static int ht_init_bucket(ht_bucket* bucket);
@@ -34,9 +16,6 @@ static void ht_bucket_remove(ht_bucket* bucket, size_t idx, FreeFn* free_key,
                              FreeFn* free_val);
 static void ht_bucket_free(ht_bucket* bucket, FreeFn* free_key,
                            FreeFn* free_val);
-static ht_entry* ht_entry_new(void* key, size_t key_len, void* data,
-                              size_t data_size);
-static void ht_entry_free(ht_entry* entry, FreeFn* free_key, FreeFn* free_val);
 
 ht ht_new(size_t data_size, CmpFn* cmp_key) {
     ht ht = {0};
@@ -427,22 +406,30 @@ static void ht_bucket_free(ht_bucket* bucket, FreeFn* free_key,
     }
 }
 
-static ht_entry* ht_entry_new(void* key, size_t key_len, void* data,
-                              size_t data_size) {
+ht_entry* ht_entry_new(void* key, size_t key_len, void* data,
+                       size_t data_size) {
     ht_entry* entry;
-    size_t offset = key_len + ht_padding(key_len);
-    size_t needed = (sizeof *entry) + offset + data_size;
+    size_t needed;
+    size_t offset;
+    if (data) {
+        offset = key_len + ht_padding(key_len);
+        needed = (sizeof *entry) + offset + data_size;
+    } else {
+        needed = key_len;
+    }
     entry = malloc(needed);
     if (entry == NULL) {
         return NULL;
     }
     memcpy(entry->data, key, key_len);
-    memcpy(entry->data + offset, data, data_size);
+    if (data) {
+        memcpy(entry->data + offset, data, data_size);
+    }
     entry->key_len = key_len;
     return entry;
 }
 
-static void ht_entry_free(ht_entry* entry, FreeFn* free_key, FreeFn* free_val) {
+void ht_entry_free(ht_entry* entry, FreeFn* free_key, FreeFn* free_val) {
     if (free_val) {
         size_t key_len = entry->key_len;
         size_t offset = key_len + ht_padding(key_len);

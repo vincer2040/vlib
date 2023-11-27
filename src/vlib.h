@@ -824,9 +824,22 @@ int pq_delete(pq* pq, void* out, CmpFn* fn);
 void pq_free(pq* pq, FreeFn* fn);
 
 /**
- * entry in the hashtable. defined in ht.c
+ * @brief an entry in the hashtable
+ *
+ * the key is padded to ensure that data is on an 8 byte aligned address
+ *
+ * Memory layout:
+ *  --------------------------------
+ * | key_len | key + padding | data |
+ *  --------------------------------
  */
-struct ht_entry;
+typedef struct ht_entry {
+    size_t key_len;
+    unsigned char data[];
+} ht_entry;
+ht_entry* ht_entry_new(void* key, size_t key_len, void* data,
+                              size_t data_size);
+void ht_entry_free(ht_entry* entry, FreeFn* free_key, FreeFn* free_val);
 
 typedef struct {
     size_t len;
@@ -835,6 +848,9 @@ typedef struct {
 } ht_bucket;
 
 #define HT_SEED_SIZE 16
+#define HT_INITIAL_CAP 32
+#define HT_BUCKET_INITIAL_CAP 2
+
 
 /**
  * @brief hashtable implementation
@@ -930,6 +946,15 @@ int ht_delete(ht* ht, void* key, size_t key_len, FreeFn* free_key,
  * ignored
  */
 void ht_free(ht* ht, FreeFn* free_key, FreeFn* free_val);
+
+typedef struct {
+    size_t len;
+    size_t cap;
+    size_t data_size;
+    CmpFn* cmp_key;
+    unsigned char seed[HT_SEED_SIZE];
+    ht_bucket* buckets;
+} set;
 
 /**
  * @brief an lru data structure
