@@ -42,8 +42,8 @@ static tree_node** depth_first_find_node(tree_node** root, void* key,
                                          size_t key_size, size_t* idx,
                                          CmpFn* fn);
 static tree_node** breadth_first_find_node(tree_node** root, void* key,
-                                          size_t key_size, size_t* idx,
-                                          CmpFn* fn);
+                                           size_t key_size, size_t* idx,
+                                           CmpFn* fn);
 static void tree_node_delete(tree_node** parent, tree_node** node,
                              size_t key_size, size_t idx, FreeFn* fn);
 static int tree_node_insert(tree_node** parent, tree_node** node,
@@ -111,7 +111,8 @@ int tree_breadth_first_insert(tree* tree, void* key, void* par_key, CmpFn* fn) {
         tree->root = node;
         return 0;
     }
-    parent = breadth_first_find_node(&(tree->root), par_key, key_size, &idx, fn);
+    parent =
+        breadth_first_find_node(&(tree->root), par_key, key_size, &idx, fn);
     if (!parent) {
         return -1;
     }
@@ -145,7 +146,8 @@ bool tree_breadth_first_find(tree* tree, void* key, CmpFn* fn) {
     if (tree->root == NULL) {
         return false;
     }
-    node = breadth_first_find_node(&(tree->root), key, tree->key_size, &idx, fn);
+    node =
+        breadth_first_find_node(&(tree->root), key, tree->key_size, &idx, fn);
     if (node) {
         return true;
     }
@@ -172,7 +174,8 @@ int tree_depth_first_delete(tree* tree, void* key, CmpFn* cmp_fn,
     return 0;
 }
 
-int tree_breadth_first_delete(tree* tree, void* key, CmpFn* cmp_fn, FreeFn* free_fn) {
+int tree_breadth_first_delete(tree* tree, void* key, CmpFn* cmp_fn,
+                              FreeFn* free_fn) {
     tree_node** node;
     size_t idx, key_size = tree->key_size;
     if (tree->root == NULL) {
@@ -219,8 +222,8 @@ static tree_node** depth_first_find_node(tree_node** root, void* key,
 }
 
 static tree_node** breadth_first_find_node(tree_node** root, void* key,
-                                          size_t key_size, size_t* idx,
-                                          CmpFn* fn) {
+                                           size_t key_size, size_t* idx,
+                                           CmpFn* fn) {
     queue q;
     size_t offset;
     q_tree_node root_node = {0};
