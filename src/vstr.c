@@ -7,9 +7,11 @@ static vstr_lg vstr_make_lg_len(const char* data, size_t len);
 static int vstr_sm_push_char(vstr_sm* sm, char c, uint8_t avail);
 static int vstr_lg_push_char(vstr_lg* lg, char c);
 static int vstr_lg_push_string(vstr_lg* lg, const char* str, size_t str_len);
-static int vstr_sm_push_string(vstr_sm* sm, const char* str, size_t str_len, uint8_t avail);
+static int vstr_sm_push_string(vstr_sm* sm, const char* str, size_t str_len,
+                               uint8_t avail);
 static int vstr_realloc_lg(vstr_lg* lg, size_t len, size_t cap);
-static int vstr_realloc_lg_len(vstr_lg* lg, size_t len, size_t cap, size_t new_len);
+static int vstr_realloc_lg_len(vstr_lg* lg, size_t len, size_t cap,
+                               size_t new_len);
 
 vstr vstr_new(void) {
     vstr s = {0};
@@ -35,7 +37,7 @@ vstr vstr_from(const char* cstr) {
 }
 
 vstr vstr_from_len(const char* cstr, size_t len) {
-    vstr s = { 0 };
+    vstr s = {0};
     if (len > VSTR_MAX_SMALL_SIZE) {
         s.str_data.lg = vstr_make_lg_len(cstr, len);
         if (s.str_data.lg.cap == 0) {
@@ -110,7 +112,8 @@ int vstr_push_string(vstr* s, const char* str) {
     if (s->is_large) {
         return vstr_lg_push_string(&(s->str_data.lg), str, str_len);
     }
-    push_res = vstr_sm_push_string(&(s->str_data.sm), str, str_len, s->small_avail);
+    push_res =
+        vstr_sm_push_string(&(s->str_data.sm), str, str_len, s->small_avail);
     if (push_res == 0) {
         s->small_avail -= str_len;
         return 0;
@@ -168,7 +171,8 @@ static int vstr_sm_push_char(vstr_sm* sm, char c, uint8_t avail) {
     return 0;
 }
 
-static int vstr_sm_push_string(vstr_sm* sm, const char* str, size_t str_len, uint8_t avail) {
+static int vstr_sm_push_string(vstr_sm* sm, const char* str, size_t str_len,
+                               uint8_t avail) {
     uint8_t ins;
     if (str_len > avail) {
         return -1;
@@ -226,7 +230,8 @@ static int vstr_realloc_lg(vstr_lg* lg, size_t len, size_t cap) {
     return 0;
 }
 
-static int vstr_realloc_lg_len(vstr_lg* lg, size_t len, size_t cap, size_t new_len) {
+static int vstr_realloc_lg_len(vstr_lg* lg, size_t len, size_t cap,
+                               size_t new_len) {
     void* tmp;
     cap += new_len;
     tmp = realloc(lg->data, cap);
