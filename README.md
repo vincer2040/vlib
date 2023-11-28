@@ -126,6 +126,12 @@ append a char to a vstr:
 int vstr_push_char(vstr* s, char c);
 ```
 
+append a string to a vstr
+
+```c
+int vstr_push_string(vstr* s, const char* str);
+```
+
 free a vstr:
 
 ```c
