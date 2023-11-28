@@ -102,6 +102,12 @@ create a new vstr from a traditional C string of length len
 vstr vstr_from_len(const char* cstr, size_t len);
 ```
 
+create a vstr from a formatted string
+
+```c
+vstr vstr_format(const char* fmt, ...);
+```
+
 get the length of the vstr:
 
 ```c
