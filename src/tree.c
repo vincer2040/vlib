@@ -33,9 +33,17 @@ typedef struct tree_node {
     unsigned char data[];
 } tree_node;
 
+typedef struct {
+    tree_node* node;
+    size_t idx;
+} q_tree_node;
+
 static tree_node** depth_first_find_node(tree_node** root, void* key,
                                          size_t key_size, size_t* idx,
                                          CmpFn* fn);
+static tree_node* breadth_first_find_node(tree_node* root, void* key,
+                                          size_t key_size, size_t* idx,
+                                          CmpFn* fn);
 static void tree_node_delete(tree_node** parent, tree_node** node,
                              size_t key_size, size_t idx, FreeFn* fn);
 static int tree_node_insert(tree_node** parent, tree_node** node,
@@ -99,32 +107,15 @@ bool tree_depth_first_find(tree* tree, void* key, CmpFn* fn) {
 }
 
 bool tree_breadth_first_find(tree* tree, void* key, CmpFn* fn) {
-    queue q;
-    size_t offset;
+    size_t idx;
+    tree_node* node;
     if (tree->root == NULL) {
         return false;
     }
-    q = queue_new(sizeof(tree_node*));
-    queue_enque(&q, &(tree->root));
-    offset = tree_offset(tree->key_size);
-    while (q.len) {
-        tree_node* cur;
-        int cmp;
-        size_t i, len;
-        queue_deque(&q, &cur);
-        cmp = fn(key, cur->data);
-        if (cmp == 0) {
-            queue_free(&q, NULL);
-            return true;
-        }
-        len = cur->len;
-        for (i = 0; i < len; ++i) {
-            tree_node** child =
-                (tree_node**)(cur->data + offset + (sizeof(tree_node*) * i));
-            queue_enque(&q, child);
-        }
+    node = breadth_first_find_node(tree->root, key, tree->key_size, &idx, fn);
+    if (node) {
+        return true;
     }
-    queue_free(&q, NULL);
     return false;
 }
 
@@ -172,6 +163,44 @@ static tree_node** depth_first_find_node(tree_node** root, void* key,
             return t;
         }
     }
+    return NULL;
+}
+
+static tree_node* breadth_first_find_node(tree_node* root, void* key,
+                                          size_t key_size, size_t* idx,
+                                          CmpFn* fn) {
+    queue q;
+    size_t offset;
+    q_tree_node root_node = {0};
+    q = queue_new(sizeof(q_tree_node));
+    root_node.node = root;
+    root_node.idx = 0;
+    queue_enque(&q, &root_node);
+    offset = tree_offset(key_size);
+    while (q.len) {
+        q_tree_node cur;
+        tree_node* cur_node;
+        int cmp;
+        size_t i, len;
+        queue_deque(&q, &cur);
+        cur_node = cur.node;
+        cmp = fn(key, cur_node->data);
+        if (cmp == 0) {
+            queue_free(&q, NULL);
+            *idx = cur.idx;
+            return cur_node;
+        }
+        len = cur_node->len;
+        for (i = 0; i < len; ++i) {
+            q_tree_node qt_node = {0};
+            tree_node** child = (tree_node**)(cur_node->data + offset +
+                                              (sizeof(tree_node*) * i));
+            qt_node.idx = i;
+            qt_node.node = *child;
+            queue_enque(&q, &qt_node);
+        }
+    }
+    queue_free(&q, NULL);
     return NULL;
 }
 
