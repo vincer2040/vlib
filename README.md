@@ -71,9 +71,9 @@ the default path is /usr/local/lib
 make install
 ```
 
-### usage 
+### usage
 
-`#include "vlib.h"` into your project and compile vlib along with 
+`#include "vlib.h"` into your project and compile vlib along with
 your binary. The library should be statically linked.
 
 ### String
@@ -481,11 +481,24 @@ insert a key into the tree using depth first search
 int tree_depth_first_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
 ```
 
+insert a key into the tree using breadth first search
+
+```c
+int tree_breadth_first_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
+```
+
 delete a key from the tree using depth first search
 
 ```c
 int tree_depth_first_delete(tree* tree, void* key, CmpFn* cmp_fn,
                             FreeFn* free_fn);
+```
+
+delete a key from the tree using breadth first search
+
+```c
+int tree_breadth_first_delete(tree* tree, void* key, CmpFn* cmp_fn,
+                              FreeFn* free_fn);
 ```
 
 free the whole tree
