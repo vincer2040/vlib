@@ -1,8 +1,12 @@
 #include "vlib.h"
+#include <assert.h>
+#include <stdarg.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 static vstr_lg vstr_make_lg(const char* data);
+static vstr_lg vstr_lg_new_len(size_t len);
 static vstr_lg vstr_make_lg_len(const char* data, size_t len);
 static int vstr_sm_push_char(vstr_sm* sm, char c, uint8_t avail);
 static int vstr_lg_push_char(vstr_lg* lg, char c);
@@ -16,6 +20,18 @@ static int vstr_realloc_lg_len(vstr_lg* lg, size_t len, size_t cap,
 vstr vstr_new(void) {
     vstr s = {0};
     s.is_large = 0;
+    s.small_avail = VSTR_MAX_SMALL_SIZE;
+    return s;
+}
+
+vstr vstr_new_len(size_t len) {
+    vstr s = {0};
+    if (len > VSTR_MAX_SMALL_SIZE) {
+        assert(len <= VSTR_MAX_LARGE_SIZE);
+        s.str_data.lg = vstr_lg_new_len(len);
+        s.is_large = 1;
+        return s;
+    }
     s.small_avail = VSTR_MAX_SMALL_SIZE;
     return s;
 }
@@ -48,6 +64,38 @@ vstr vstr_from_len(const char* cstr, size_t len) {
     }
     memcpy(s.str_data.sm.data, cstr, len);
     s.small_avail = VSTR_MAX_SMALL_SIZE - len;
+    return s;
+}
+
+vstr vstr_format(const char* fmt, ...) {
+    vstr s;
+    int n;
+    va_list ap;
+    size_t size;
+
+    va_start(ap, fmt);
+    n = vsnprintf(NULL, 0, fmt, ap);
+    va_end(ap);
+
+    assert(n != 0);
+
+    size = ((size_t)n + 1);
+
+    s = vstr_new_len(size);
+
+    if (s.is_large) {
+        va_start(ap, fmt);
+        n = vsnprintf(s.str_data.lg.data, size, fmt, ap);
+        va_end(ap);
+        s.str_data.lg.len = size - 1;
+    } else {
+        va_start(ap, fmt);
+        n = vsnprintf(s.str_data.sm.data, size, fmt, ap);
+        va_end(ap);
+        s.small_avail = VSTR_MAX_SMALL_SIZE - size + 1;
+    }
+
+    assert(n != -1);
     return s;
 }
 
@@ -144,6 +192,15 @@ static vstr_lg vstr_make_lg(const char* data) {
     return lg;
 }
 
+static vstr_lg vstr_lg_new_len(size_t len) {
+    vstr_lg lg = {0};
+    lg.len = 0;
+    lg.cap = len + 1;
+    lg.data = calloc(len + 1, sizeof(char));
+    assert(lg.data != NULL);
+    return lg;
+}
+
 static vstr_lg vstr_make_lg_len(const char* data, size_t len) {
     vstr_lg lg = {0};
     if (len >= VSTR_MAX_LARGE_SIZE) {
@@ -204,6 +261,9 @@ static int vstr_lg_push_char(vstr_lg* lg, char c) {
 static int vstr_lg_push_string(vstr_lg* lg, const char* str, size_t str_len) {
     size_t len = lg->len, cap = lg->cap;
     if (cap == 0) {
+        return -1;
+    }
+    if ((len + str_len) > VSTR_MAX_LARGE_SIZE) {
         return -1;
     }
     if ((len + str_len) > (cap - 1)) {

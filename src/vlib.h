@@ -197,6 +197,12 @@ typedef struct {
  */
 vstr vstr_new(void);
 /**
+ * @brief create a new vstr with capacity len + 1
+ * @param len the length to reserve
+ * @returns a vstr
+ */
+vstr vstr_new_len(size_t len);
+/**
  * @brief create a new vstr from a traditional C string.
  * @param cstr the C style string. Must be null terminated (strlen is called to
  * get the length)
@@ -210,6 +216,13 @@ vstr vstr_from(const char* cstr);
  * @returns a vstr struct representing cstr
  */
 vstr vstr_from_len(const char* cstr, size_t len);
+/**
+ * @brief create a vstr from a formatted string
+ * @param fmt the format
+ * @param ... the argument list used in format
+ * @returns vstr
+ */
+vstr vstr_format(const char* fmt, ...);
 /**
  * @brief get the length of a vstr
  * @param s pointer to the vstr

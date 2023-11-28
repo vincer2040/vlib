@@ -104,6 +104,27 @@ START_TEST(test_vstr_push_string) {
 }
 END_TEST
 
+START_TEST(test_vstr_format_small) {
+    vstr s = vstr_format("%s", "small string");
+    ck_assert_str_eq(vstr_data(&s), "small string");
+    ck_assert_uint_eq(vstr_len(&s), 12);
+    vstr_push_string(&s, " small");
+    ck_assert_str_eq(vstr_data(&s), "small string small");
+    ck_assert_uint_eq(vstr_len(&s), 18);
+}
+END_TEST
+
+START_TEST(test_vstr_format_large) {
+    vstr s = vstr_format("%s", "large string large string");
+    ck_assert_str_eq(vstr_data(&s), "large string large string");
+    ck_assert_uint_eq(vstr_len(&s), 25);
+    vstr_push_string(&s, " large");
+    ck_assert_str_eq(vstr_data(&s), "large string large string large");
+    ck_assert_uint_eq(vstr_len(&s), 31);
+    vstr_free(&s);
+}
+END_TEST
+
 Suite* ht_suite() {
     Suite* s;
     TCase* tc_core;
@@ -113,6 +134,8 @@ Suite* ht_suite() {
     tcase_add_test(tc_core, test_vstr_from_sm);
     tcase_add_test(tc_core, test_vstr_cmp);
     tcase_add_test(tc_core, test_vstr_push_string);
+    tcase_add_test(tc_core, test_vstr_format_small);
+    tcase_add_test(tc_core, test_vstr_format_large);
     suite_add_tcase(s, tc_core);
     return s;
 }
