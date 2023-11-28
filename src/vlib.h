@@ -720,7 +720,9 @@ struct tree_node;
  *      - depth first find (tree_depth_first_find)
  *      - breadth first find (tree_breadth_first_find)
  *      - depth first insert (tree_depth_first_insert)
+ *      - breadth first insert (tree_breadth_first_insert)
  *      - depth first delete (tree_depth_first_delete)
+ *      - breadth first delete (tree_breadth_first_delete)
  */
 typedef struct {
     size_t num_el;          /* number of elements in the tree */
@@ -760,6 +762,15 @@ bool tree_breadth_first_find(tree* tree, void* key, CmpFn* fn);
  */
 int tree_depth_first_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
 /**
+ * @brief insert a key into the tree using breadth first search
+ * @param tree the tree to insert into
+ * @param key the key to insert
+ * @param par_key the parent key to insert the child into
+ * @param fn comparison function to determine if keys are equal
+ * @returns 0 on success, -1 on failure
+ */
+int tree_breadth_first_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
+/**
  * @brief delete a key from the tree using depth first search
  * @param tree the tree to delete from
  * @param key the key to delete
@@ -770,6 +781,17 @@ int tree_depth_first_insert(tree* tree, void* key, void* par_key, CmpFn* fn);
  */
 int tree_depth_first_delete(tree* tree, void* key, CmpFn* cmp_fn,
                             FreeFn* free_fn);
+/**
+ * @brief delete a key from the tree using breadth first search
+ * @param tree the tree to delete from
+ * @param key the key to delete
+ * @param cmp_fn comparison function to determine if keys are equal
+ * @param free_fn option callback function to free the key in the deleted node.
+ * If null, it is ignored
+ * @returns 0 on success, -1 on failure
+ */
+int tree_breadth_first_delete(tree* tree, void* key, CmpFn* cmp_fn,
+                              FreeFn* free_fn);
 /**
  * @brief free the whole tree
  * @param tree the tree to free
@@ -958,10 +980,10 @@ void ht_free(ht* ht, FreeFn* free_key, FreeFn* free_val);
  *      - delete (set_delete)
  */
 typedef struct {
-    size_t len;       /* the number of elements in the set */
-    size_t cap;       /* the number of buckets in the set */
-    CmpFn* cmp_key;   /* optional function to compare keys. If null, memcmp is
-                         used */
+    size_t len;     /* the number of elements in the set */
+    size_t cap;     /* the number of buckets in the set */
+    CmpFn* cmp_key; /* optional function to compare keys. If null, memcmp is
+                       used */
     unsigned char seed[HT_SEED_SIZE]; /* seed used to hash the keys */
     ht_bucket* buckets;               /* slots of the table */
 } set;
