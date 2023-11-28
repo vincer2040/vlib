@@ -237,6 +237,13 @@ int vstr_cmp(vstr* a, vstr* b);
  */
 int vstr_push_char(vstr* s, char c);
 /**
+ * @brief append a string to a vstr
+ * @param s the vstr to append to
+ * @param str the string to append
+ * @returns 0 on success, -1 on failure
+ */
+int vstr_push_string(vstr* s, const char* str);
+/**
  * @brief free a vstr
  * @param s the vstr to free
  */

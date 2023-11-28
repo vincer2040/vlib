@@ -85,6 +85,25 @@ START_TEST(test_vstr_cmp) {
 }
 END_TEST
 
+START_TEST(test_vstr_push_string) {
+    vstr s = vstr_new();
+    vstr_push_string(&s, "aaaaaaaaaa");
+    ck_assert_uint_eq(vstr_len(&s), 10);
+    vstr_push_string(&s, "aaaaaaaaaa");
+    ck_assert_uint_eq(vstr_len(&s), 20);
+    vstr_push_string(&s, "aaa");
+    ck_assert_uint_eq(vstr_len(&s), 23);
+    ck_assert_uint_eq(s.is_large, 0);
+    ck_assert_uint_eq(s.small_avail, 0);
+    ck_assert_str_eq(vstr_data(&s), "aaaaaaaaaaaaaaaaaaaaaaa");
+    vstr_push_string(&s, "bbbbbbbbbb");
+    ck_assert_uint_eq(vstr_len(&s), 33);
+    ck_assert_str_eq(vstr_data(&s), "aaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbb");
+    ck_assert_uint_eq(s.is_large, 1);
+    vstr_free(&s);
+}
+END_TEST
+
 Suite* ht_suite() {
     Suite* s;
     TCase* tc_core;
@@ -93,6 +112,7 @@ Suite* ht_suite() {
     tcase_add_test(tc_core, test_vstr_push_char);
     tcase_add_test(tc_core, test_vstr_from_sm);
     tcase_add_test(tc_core, test_vstr_cmp);
+    tcase_add_test(tc_core, test_vstr_push_string);
     suite_add_tcase(s, tc_core);
     return s;
 }
