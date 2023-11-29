@@ -29,6 +29,7 @@
 #define __VLIB_H__
 
 #include "small_vec.h"
+#include "util.h"
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -76,13 +77,6 @@ typedef int CmpFn(void* a, void* b);
  * Utility free function type
  */
 typedef void FreeFn(void* ptr);
-
-/**
- * @brief utility function for putting random bytes into a buffer of len length
- * @param p the buffer to put the random bytes into
- * @param len the available length of p
- */
-void get_random_bytes(uint8_t* p, size_t len);
 
 /**
  * @brief binary search implementation
