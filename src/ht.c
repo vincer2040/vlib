@@ -415,7 +415,7 @@ ht_entry* ht_entry_new(void* key, size_t key_len, void* data,
         offset = key_len + ht_padding(key_len);
         needed = (sizeof *entry) + offset + data_size;
     } else {
-        needed = key_len;
+        needed = (sizeof *entry) + key_len;
     }
     entry = malloc(needed);
     if (entry == NULL) {
